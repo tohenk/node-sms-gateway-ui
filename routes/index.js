@@ -206,13 +206,19 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/about', (req, res, next) => {
-    const packageInfo = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'package.json')));
-    res.json({
-        title: packageInfo.description,
-        version: packageInfo.version,
-        author: packageInfo.author.name ? packageInfo.author.name + ' <' + packageInfo.author.email + '>' : packageInfo.author,
-        license: packageInfo.license
-    });
+    let about;
+    if (req.app.about) {
+        about = req.app.about;
+    } else {
+        const packageInfo = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json')));
+        about = {
+            title: packageInfo.description,
+            version: packageInfo.version,
+            author: packageInfo.author.name ? packageInfo.author.name + ' <' + packageInfo.author.email + '>' : packageInfo.author,
+            license: packageInfo.license
+        }
+    }
+    res.json(about);
 });
 
 router.get('/queue', (req, res, next) => {
