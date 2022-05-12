@@ -1,6 +1,6 @@
 {
   "name": "@ntlab/sms-gateway-ui",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "SMS Gateway Web Interface",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,7 @@
   "dependencies": {
     "@ntlab/express-middleware": "^1.1.0",
     "@ntlab/ntjs": "^1.1.0",
-    "@ntlab/ntjs-assets": "^1.1.0",
+    "@ntlab/ntjs-assets": "^1.1.1",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
