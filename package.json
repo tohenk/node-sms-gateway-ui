@@ -1,6 +1,6 @@
 {
   "name": "@ntlab/sms-gateway-ui",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "SMS Gateway Web Interface",
   "main": "index.js",
   "scripts": {
@@ -23,14 +23,14 @@
   },
   "homepage": "https://github.com/tohenk/node-sms-gateway-ui#readme",
   "dependencies": {
-    "@ntlab/express-middleware": "^1.1.0",
-    "@ntlab/ntjs": "^1.1.0",
-    "@ntlab/ntjs-assets": "^1.1.1",
+    "@ntlab/express-middleware": "^1.1.1",
+    "@ntlab/ntjs": "^1.1.1",
+    "@ntlab/ntjs-assets": "^1.1.3",
     "ejs": "^3.1.8",
-    "express": "^4.18.1",
+    "express": "^4.18.2",
     "express-session": "^1.17.3",
     "http-errors": "^2.0.0",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "morgan": "^1.10.0",
     "session-file-store": "^1.5.0"
   }
