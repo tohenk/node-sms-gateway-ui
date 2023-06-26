@@ -45,9 +45,9 @@
 $.tasks = {
     notifyResult: function(result) {
         if (result.success) {
-            $.ntfy.notify('Operation successfully submitted!', 'success');
+            $.notify('Operation successfully submitted!', 'success');
         } else {
-            $.ntfy.notify('Operation failed!', 'error');
+            $.notify('Operation failed!', 'error');
         }
     },
     about: function() {

@@ -46,9 +46,9 @@ $.messageView = function(address) {
                 const self = this;
                 if (result.success) {
                     this.load();
-                    $.ntfy.notify(result.notice, 'success');
+                    $.notify(result.notice, 'success');
                 } else {
-                    $.ntfy.notify(result.error, 'error');
+                    $.notify(result.error, 'error');
                 }
             },
             send: function() {
