@@ -26,7 +26,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/login', (req, res, next) => {
-    var redir;
+    let redir;
     if (req.params.r) {
         redir = req.params.r;
     } else if (req.query.r) {

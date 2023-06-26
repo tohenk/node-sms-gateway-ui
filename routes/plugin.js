@@ -29,7 +29,7 @@ const router = express.Router();
 router.all('/p/:plugin', (req, res, next) => {
     if (req.params.plugin) {
         const term = req.app.term;
-        var plugin;
+        let plugin;
         term.plugins.forEach(p => {
             if (p.name == req.params.plugin) {
                 plugin = p;

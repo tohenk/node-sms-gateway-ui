@@ -31,8 +31,8 @@
   .useDependencies(['JQuery/Util', 'JQuery/FormPost'])
   .add(`
 $.login = function(form) {
-    var fp = $.formpost(form, {progress: false, xhr: true});
-    var err = fp.errhelper;
+    const fp = $.formpost(form, {progress: false, xhr: true});
+    const err = fp.errhelper;
     err.errorContainer = form.find('.message');
     err.errorFormat = err.ERROR_INPLACE;
     err.inplace = function(el, error) {

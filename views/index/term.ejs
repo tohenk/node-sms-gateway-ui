@@ -131,7 +131,7 @@
 $.term.init();
 $('a[data-term]').on('click', function(e) {
     e.preventDefault();
-    var a = $(this);
+    const a = $(this);
     a.siblings('a').removeClass('active');
     a.addClass('active');
     $.term.handle(a.attr('data-term'), a.attr('data-operator'));

@@ -37,7 +37,7 @@ function getQueue(req, res, next) {
     stor.GwQueue.count().then(count => {
         result.count = count;
         result.items = [];
-        var offset = (page - 1) * pageSize;
+        let offset = (page - 1) * pageSize;
         stor.GwQueue.findAll({
             order: [['time', 'DESC']],
             offset: offset,
@@ -59,7 +59,7 @@ function getQueue(req, res, next) {
                 });
             });
             // create pagination
-            result.pages = res.pager(result.count, pageSize, page);
+            result.pages = req.app.locals.pager(result.count, pageSize, page);
             // send content
             res.json(result);
         });
@@ -75,7 +75,7 @@ function getMessage(req, res, next) {
     stor.countRecents().then(count => {
         result.count = count.length ? count[0].count : 0;
         result.items = [];
-        var offset = (page - 1) * pageSize;
+        let offset = (page - 1) * pageSize;
         stor.getRecents(offset, pageSize).then(results => {
             results.forEach(queue => {
                 offset++;
@@ -92,7 +92,7 @@ function getMessage(req, res, next) {
                 });
             });
             // create pagination
-            result.pages = res.pager(result.count, pageSize, page);
+            result.pages = req.app.locals.pager(result.count, pageSize, page);
             // send content
             res.json(result);
         });
@@ -139,7 +139,7 @@ function readMessage(req, res, next) {
                 messages[GwLog.hash].code = GwLog.code;
             });
             Object.values(messages).forEach(msg => {
-                var time = moment(msg.time).format('DD MMM YYYY');
+                const time = moment(msg.time).format('DD MMM YYYY');
                 if (!result[time]) result[time] = [];
                 result[time].push(msg);
             });
@@ -162,20 +162,20 @@ function getParameters(data) {
     const result = {};
     const re = /(\]\[|\]|\[)/g;
     Object.keys(data).forEach(key => {
-        var isarray = false;
-        var str = key;
+        let isarray = false;
+        let str = key;
         if ('[]' == str.substr(-2)) {
             isarray = true;
             str = str.substr(0, str.length - 2);
         }
         str = str.replace(re, '.');
         if ('.' == str.substr(-1)) str = str.substr(0, str.length - 1);
-        var top = result;
-        var paths = str.split('.');
-        for (var i = 0; i < paths.length; i++) {
-            var p = paths[i];
+        const paths = str.split('.');
+        let top = result;
+        for (let i = 0; i < paths.length; i++) {
+            const p = paths[i];
             if (i == paths.length - 1) {
-                var value = data[key];
+                let value = data[key];
                 if (value == 'on' || value == 'true') value = true;
                 if (value == 'off' || value == 'false') value = false;
                 if (isarray) {
@@ -248,7 +248,7 @@ router.get('/activity-log', (req, res, next) => {
 router.get('/client', (req, res, next) => {
     const result = [];
     const term = req.app.term;
-    var nr = 0;
+    let nr = 0;
     term.gwclients.forEach(socket => {
         const info = {
             nr: ++nr,

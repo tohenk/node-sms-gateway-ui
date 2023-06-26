@@ -17,9 +17,9 @@ $.messageView = function(address) {
     if (!$.messageViewDlg) {
         $.messageViewDlg = {
             init: function() {
-                var self = this;
-                var msgtitle = 'View message';
-                var msgtmpl =
+                const self = this;
+                const msgtitle = 'View message';
+                const msgtmpl =
                     '<form class="ui container form">' +
                         '<div class="scrolling content" style="margin-bottom: 1em; padding-right: 1em;">Messages will shown here</div>' +
                         '<div class="field">' +
@@ -43,7 +43,7 @@ $.messageView = function(address) {
                 });
             },
             notifyResult: function(result) {
-                var self = this;
+                const self = this;
                 if (result.success) {
                     this.load();
                     $.ntfy.notify(result.notice, 'success');
@@ -52,9 +52,9 @@ $.messageView = function(address) {
                 }
             },
             send: function() {
-                var self = this;
-                var inp = self.dlg.find('input[name="message"]');
-                var msg = inp.val();
+                const self = this;
+                const inp = self.dlg.find('input[name="message"]');
+                const msg = inp.val();
                 if (!msg.length) {
                     inp.focus();
                 } else {
@@ -67,7 +67,7 @@ $.messageView = function(address) {
                 }
             },
             show: function(address) {
-                var self = this;
+                const self = this;
                 self.address = address;
                 self.dlg.find('input[name="message"]').val('');
                 self.dlg.find('.header').html('View message for NUMBER'.replace(/NUMBER/, address));
@@ -76,7 +76,7 @@ $.messageView = function(address) {
                 self.load();
             },
             content: function(content) {
-                var self = this;
+                const self = this;
                 self.dlg.find('form .content').html(content);
             },
             statusInfo: function(data) {
@@ -91,16 +91,16 @@ $.messageView = function(address) {
                 }
             },
             load: function() {
-                var self = this;
+                const self = this;
                 $.get('/read/NUMBER'.replace(/NUMBER/, self.address))
                     .done(function(json) {
-                        var contents = [];
-                        for (var time in json) {
+                        const contents = [];
+                        for (let time in json) {
                             contents.push('<div class="ui horizontal divider">' + time + '</div>');
                             contents.push('<div class="ui divided feed">');
                             $.each(json[time], function(i, v) {
                                 if (v.type == ${term.Storage.ACTIVITY_SMS}) {
-                                    var info = self.statusInfo(v);
+                                    const info = self.statusInfo(v);
                                     contents.push($.util.template('<div class="event">' +
                                             '<div class="label"><i class="circular blue envelope icon"></i></div>' +
                                             '<div class="content">' +

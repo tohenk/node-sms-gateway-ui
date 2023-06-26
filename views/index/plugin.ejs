@@ -26,7 +26,7 @@
 $.plugin.init();
 $('a[data-plugin]').on('click', function(e) {
     e.preventDefault();
-    var a = $(this);
+    const a = $(this);
     a.siblings('a').removeClass('active');
     a.addClass('active');
     $.plugin.handle(a);

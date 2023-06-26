@@ -11,7 +11,7 @@ $.term = {
         }
     },
     showDialer: function(name) {
-        var self = this;
+        const self = this;
         self.current = name;
         $.ntdlg.input('dialnumber', 'Place a call', 'Please input the number to dial:', '', 'phone icon', function(number) {
             if (number.length) {
@@ -26,10 +26,10 @@ $.term = {
         });
     },
     sendMessage: function(name) {
-        var self = this;
+        const self = this;
         self.current = name;
         if (!self.msgdlg) {
-            var message =
+            const message =
                 '<form class="ui container form">' +
                     '<div class="field">' +
                         '<label>Phone number:</label>' +
@@ -45,8 +45,8 @@ $.term = {
                     type: 'green approve',
                     caption: '<i class="check icon"></i>Ok',
                     handler: function() {
-                        var msgaddr = self.msgaddress.val();
-                        var msgtext = self.msgtext.val();
+                        const msgaddr = self.msgaddress.val();
+                        const msgtext = self.msgtext.val();
                         if ('' == msgaddr) {
                             self.msgaddress.focus();
                             return false;
@@ -79,10 +79,10 @@ $.term = {
         $.ntdlg.show(self.msgdlg);
     },
     sendUssd: function(name) {
-        var self = this;
+        const self = this;
         self.current = name;
         if (!self.ussddlg) {
-            var message =
+            const message =
                 '<form class="ui container form">' +
                     '<div class="field">' +
                         '<label>Service:</label>' +
@@ -98,7 +98,7 @@ $.term = {
                     type: 'green',
                     caption: '<i class="check icon"></i>Ok',
                     handler: function() {
-                        var service = self.ussdservice.val();
+                        const service = self.ussdservice.val();
                         if ('' == service) {
                             self.ussdservice.focus();
                         } else {
@@ -128,19 +128,19 @@ $.term = {
         $.ntdlg.show(self.ussddlg);
     },
     receiveUssd: function(data) {
-        var self = this;
+        const self = this;
         if (self.current == data.imsi && self.ussdfeedback) {
-            var message = self.ussdfeedback.val();
+            let message = self.ussdfeedback.val();
             if (message.length) message += '\\r\\n';
             message += data.message;
             self.ussdfeedback.val(message);
         }
     },
     clicker: function(cmd, src) {
-        var self = this;
-        var cont = src.parents('form');
+        const self = this;
+        const cont = src.parents('form');
         if (cont.length) {
-            var term = cont.attr('data-term');
+            const term = cont.attr('data-term');
             switch (cmd) {
                 case 'dial':
                     self.showDialer(term);
@@ -155,11 +155,11 @@ $.term = {
         }
     },
     loadConfig: function() {
-        var self = this;
+        const self = this;
         $.get('/IMSI/config'.replace(/IMSI/, self.form.attr('data-term')))
-            .then(function(json) {
+            .done(function(json) {
                 $.each(json, function(key, value) {
-                    var item = null;
+                    let item;
                     switch (key) {
                         case 'operators':
                             item = self.form.find('select[name="term[' + key + '][]"]');
@@ -171,9 +171,9 @@ $.term = {
                     if (item) {
                         if (item.is('select')) {
                             item.find('option').each(function() {
-                                var option = $(this);
-                                var optval = option.attr('value');
-                                var selected = value.indexOf(optval) >= 0;
+                                const option = $(this);
+                                const optval = option.attr('value');
+                                const selected = value.indexOf(optval) >= 0;
                                 option.prop('selected', selected);
                                 item.dropdown(selected ? 'set selected' : 'remove selected', optval);
                             });
@@ -188,7 +188,7 @@ $.term = {
         ;
     },
     handle: function(terminal, operator) {
-        var self = this;
+        const self = this;
         self.form.attr('action', '/IMSI/apply'.replace(/IMSI/, terminal));
         self.form.attr('data-term', terminal);
         self.form.attr('data-operator', operator);
@@ -196,7 +196,7 @@ $.term = {
         self.loadConfig();
     },
     init: function() {
-        var self = this;
+        const self = this;
         self.form = $('form.term-config');
         $.formpost(self.form, {xhr: true, progress: false});
         self.form.on('formsaved', function() {

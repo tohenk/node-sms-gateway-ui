@@ -28,7 +28,7 @@ const path = require('path');
 const logger = require('morgan');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
-const { Helper, Security } = require('@ntlab/express-middleware');
+const { Helper, Security, Factory } = require('@ntlab/express-middleware');
 const { ScriptManager, ScriptAsset } = require('@ntlab/ntjs');
 const { Assets, CDN } = require('@ntlab/ntjs-assets');
 
@@ -38,6 +38,8 @@ class ExpressApp {
 
     initialize(options) {
         options = options || {};
+
+        this.app.factory = Factory.SemanticUI;
 
         // view engine setup
         this.app.set('views', path.join(__dirname, 'views'));
@@ -94,7 +96,7 @@ class ExpressApp {
         });
 
         ScriptManager.addDefault('SemanticUI');
-        ScriptManager.addAsset(ScriptAsset.STYLESHEET, 'app.css');
+        ScriptManager.addDefaultAsset(ScriptAsset.STYLESHEET, 'app.css');
         let useCdn = options.useCdn || false;
         if (useCdn) {
             ScriptManager.parseCdn(CDN);

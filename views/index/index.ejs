@@ -39,8 +39,8 @@ $.uiCon = {
     keepalive: true,
     url: '${sockaddress}',
     init: function() {
-        var self = this;
-        self.socket = io.connect(self.url, { reconnect: self.keepalive });
+        const self = this;
+        self.socket = io.connect(self.url, {reconnection: self.keepalive});
         self.socket.on('connect', function() {
             self.connected = true;
             console.log('Socket connected');
