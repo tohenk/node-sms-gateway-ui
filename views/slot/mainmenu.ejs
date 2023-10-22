@@ -1,4 +1,4 @@
-<% menus = {
+<%_ menus = {
     branding: {
         type: 'brand',
         title: apptitle,
@@ -14,8 +14,8 @@
             }
         }
     }
-} %>
-<% if (user.authenticated) {
+} -%>
+<%_ if (user.authenticated) {
     Object.assign(menus.tasks.items, {
         divider1: {
             type: 'divider'
@@ -37,9 +37,9 @@
             url: '/logout'
         }
     });
-} %>
+} -%>
 <%- menu(menus, {mainmenu: true, indentation: 2}) %>
-<% script.create('JQuery')
+<%_ script.create('JQuery')
   .useDependencies(['JQuery/Util', 'SemanticUI/Notification', 'SemanticUI/Dialog/Message'])
   .addMiddle(`
 $.tasks = {
@@ -207,4 +207,4 @@ $.tasks = {
 }
 `).addLast(`
 $.tasks.init();
-`); %>
+`) -%>

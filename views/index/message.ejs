@@ -10,7 +10,7 @@
     </tr>
   </thead>
 </table>
-<% script.create('JQuery')
+<%_ script.create('JQuery')
   .useDependencies(['SemanticUI/Loader', 'SemanticUI/Dialog', 'SemanticUI/Notification', 'JQuery/Util'])
   .add(`
 $.messageView = function(address) {
@@ -156,4 +156,4 @@ $.message = $.loader($('div[data-tab="message"] table'), {
         });
     }
 });
-`); %>
+`) -%>

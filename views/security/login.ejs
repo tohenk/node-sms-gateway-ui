@@ -1,4 +1,4 @@
-<div class="ui middle aligned center aligned stackable grid">
+<div id="login-container" class="ui center aligned stackable grid">
   <div class="six wide column">
     <h2 class="ui image header">
       <img src="/images/logo.png" class="image">
@@ -27,7 +27,7 @@
     </form>
   </div>
 </div>
-<% script.create('JQuery')
+<%_ script.create('JQuery')
   .useDependencies(['JQuery/Util', 'JQuery/FormPost'])
   .add(`
 $.login = function(form) {
@@ -57,4 +57,4 @@ $.login = function(form) {
     form.find('input[name=username]').focus();
 }
 $.login($('form.login'));
-`); %>
+`) -%>

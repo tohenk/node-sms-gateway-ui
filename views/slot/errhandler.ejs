@@ -1,4 +1,4 @@
-<% script.create('JQuery')
+<%_ script.create('JQuery')
   .useDependencies(['JQuery/Util'])
   .addMiddle(`
 $.define('errhandler', {
@@ -24,4 +24,4 @@ $.define('errhandler', {
 $(document).ajaxError(function(event, xhr, s, e) {
     $.errhandler.handle(xhr.status);
 });
-`); %>
+`) -%>

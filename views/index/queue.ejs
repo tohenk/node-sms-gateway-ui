@@ -13,7 +13,7 @@
     </tr>
   </thead>
 </table>
-<% script.create('JQuery')
+<%_ script.create('JQuery')
   .useDependencies('SemanticUI/Loader')
   .add(`
 $.gwqueue = $.loader($('div[data-tab="queue"] table'), {
@@ -24,11 +24,11 @@ $.gwqueue = $.loader($('div[data-tab="queue"] table'), {
             '<td>' + item.hash.substr(0, 8) + '</td>' +
             '<td>' + this.icon(item.type) + '</td>' +
             '<td>' + (item.address ? item.address : '') +
-                (item.origin ? '<div><div class="ui mini grey label tag">' + item.origin + '</div></div>' : '') + '</td>' +
+                (item.origin ? '<div><div class="ui mini grey label"><i class="phone icon"></i>' + item.origin + '</div></div>' : '') + '</td>' +
             '<td>' + (item.data ? item.data : '') + '</td>' +
             '<td><i class="' + (item.processed ? 'green check' : 'clock') + ' icon"></i></td>' +
             '<td>' + item.status + '</td>' +
             '</tr>');
     }
 });
-`); %>
+`) -%>

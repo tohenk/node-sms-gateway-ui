@@ -9,7 +9,7 @@
     </tr>
   </thead>
 </table>
-<% script.create('JQuery')
+<%_ script.create('JQuery')
   .useDependencies('SemanticUI/Loader')
   .add(`
 $.client = $.loader($('div[data-tab="client"] table'), {
@@ -26,4 +26,4 @@ $.client = $.loader($('div[data-tab="client"] table'), {
         $('a[data-tab="client"] span.label').text(json.items.length);
     }
 });
-`); %>
+`) -%>

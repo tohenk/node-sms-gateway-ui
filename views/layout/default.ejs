@@ -5,27 +5,32 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title><%- sitetitle %></title>
-<% stylesheets().forEach((css) => { -%>
+<%_ stylesheets().forEach((css) => { -%>
 <link rel="stylesheet" href="<%- css %>" />
-<% }) -%>
+<%_ }) -%>
+<%_ if (mainmenu = slot('mainmenu')) { -%>
+<%_ mainmenu = include(mainmenu) -%>
+<%_ } -%>
 </head>
-<body>
-  <%_ if((mainmenu = slot('mainmenu')) && (mainmenu = include(mainmenu))) { -%>
-  <div class="ui fixed inverted menu">
-    <%- mainmenu %>
-  </div>
+<body<% if (mainmenu) { %> class="with-menu"<% } %>>
+  <%_ if (mainmenu) { -%>
+  <section class="ui fixed inverted menu">
+  <%- mainmenu -%>
+  </section>
   <%_ } -%>
-  <div class="ui container">
-  <% if(title.length) { %><h1 class="ui dividing header"><%= title %></h1><% } %>
-  <%- content %>
-  </div>
-  <%_ if((addons = slot('addons')) && (addons = include(addons))) { -%>
-  <%- addons %>
+  <main class="ui container">
+    <%_ if (title.length) { -%>
+    <h1 class="ui dividing header"><%= title %></h1>
+    <%_ } -%>
+    <%- content -%>
+  </main>
+  <%_ if ((addons = slot('addons')) && (addons = include(addons))) { -%>
+  <%- addons -%>
   <%_ } -%>
   <%_ javascripts().forEach((js) => { -%>
   <script type="text/javascript" src="<%- js %>"></script>
   <%_ }) -%>
-  <%_ if((scriptContent = scripts()).length) { -%>
+  <%_ if ((scriptContent = scripts()).length) { -%>
   <script type="text/javascript">
     //<![CDATA[
     <%- scriptContent %>

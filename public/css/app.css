@@ -1,5 +1,14 @@
-body {
+body.with-menu {
   padding-top: 5em;
+}
+
+body:not([class]) main, #login-container {
+  height: 100%;
+}
+
+#login-container > div {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 img.logo {

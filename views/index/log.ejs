@@ -1,7 +1,7 @@
 <div class="ui form">
-<textarea class="activity" rows=30 readonly></textarea>
+  <textarea class="activity" rows=30 readonly></textarea>
 </div>
-<% script.create('JQuery')
+<%_ script.create('JQuery')
   .add(`
 $.log = {
     el: $('textarea.activity'),
@@ -25,4 +25,4 @@ $.log = {
         }
     }
 }
-`); %>
+`) -%>

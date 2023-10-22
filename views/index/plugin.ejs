@@ -4,7 +4,7 @@
       <div class="ui fluid vertical pointing menu">
         <%_ term.plugins.forEach((plugin) => { -%>
         <a href="#" class="item" data-plugin="<%= plugin.name %>" data-desc="<%= plugin.description %>"><i class="<%= plugin.icon ? plugin.icon : 'plug' %> icon"></i> <%= plugin.title %></a>
-        <%_ }); -%>
+        <%_ }) -%>
       </div>
     </div>
     <div class="twelve wide column">
@@ -21,7 +21,7 @@
     </div>
   </div>
 </div>
-<% script.create('JQuery')
+<%_ script.create('JQuery')
   .add(`
 $.plugin.init();
 $('a[data-plugin]').on('click', function(e) {
@@ -31,4 +31,4 @@ $('a[data-plugin]').on('click', function(e) {
     a.addClass('active');
     $.plugin.handle(a);
 }).filter(':first').click();
-`); %>
+`) -%>

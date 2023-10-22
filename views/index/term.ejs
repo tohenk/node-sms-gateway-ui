@@ -6,8 +6,8 @@
         <div class="item header"><%= group ? group : 'ALL' %></div>
         <%_ term.groups[group].forEach((terminal) => { -%>
         <a href="#" class="item" data-term="<%= terminal.name %>" data-operator="<%= terminal.info.network.operator %>"><i class="desktop icon"></i> <%= terminal.name %> <div class="ui tiny label"><%= terminal.info.network.operator %></div></a>
-        <%_ }); -%>
-        <%_ }); -%>
+        <%_ }) -%>
+        <%_ }) -%>
       </div>
     </div>
     <div class="twelve wide column">
@@ -114,7 +114,7 @@
           <select name="term[operators][]" class="ui dropdown" multiple>
           <%_ Object.keys(term.operators).forEach((operator) => { -%>
             <option value="<%= operator %>"><%= operator %></option>
-          <%_ }); -%>
+          <%_ }) -%>
           </select>
           <small>Select which operators number allowed by this terminal, leave empty to allow all operators</small>
         </div>
@@ -126,7 +126,7 @@
     </div>
   </div>
 </div>
-<% script.create('JQuery')
+<%_ script.create('JQuery')
   .add(`
 $.term.init();
 $('a[data-term]').on('click', function(e) {
@@ -136,4 +136,4 @@ $('a[data-term]').on('click', function(e) {
     a.addClass('active');
     $.term.handle(a.attr('data-term'), a.attr('data-operator'));
 }).filter(':first').click();
-`); %>
+`) -%>

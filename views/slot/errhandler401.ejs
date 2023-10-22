@@ -1,4 +1,4 @@
-<% script.create('JQuery')
+<%_ script.create('JQuery')
   .useDependencies(['JQuery/Util', 'SemanticUI/Dialog'])
   .addMiddle(`
 $.errhandler.register(401, function() {
@@ -14,4 +14,4 @@ $.errhandler.register(401, function() {
         }
     });
 });
-`); %>
+`) -%>
