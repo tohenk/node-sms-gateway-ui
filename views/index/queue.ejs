@@ -27,8 +27,16 @@ $.gwqueue = $.loader($('div[data-tab="queue"] table'), {
                 (item.origin ? '<div><div class="ui mini grey label"><i class="phone icon"></i>' + item.origin + '</div></div>' : '') + '</td>' +
             '<td>' + (item.data ? item.data : '') + '</td>' +
             '<td><i class="' + (item.processed ? 'green check' : 'clock') + ' icon"></i></td>' +
-            '<td>' + item.status + '</td>' +
+            '<td>' + this.formatStatus(item.status) + '</td>' +
             '</tr>');
     }
 });
+$.gwqueue.formatStatus = function(status) {
+    switch (status) {
+        case 0:
+            return '<i class="red times icon"></i>';
+        case 1:
+            return '<i class="green check icon"></i>';
+    }
+}
 `) -%>
