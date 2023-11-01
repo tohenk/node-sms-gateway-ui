@@ -7,8 +7,8 @@ body:not([class]) main, #login-container {
 }
 
 #login-container > div {
-  margin-top: auto;
-  margin-bottom: auto;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
 }
 
 img.logo {
