@@ -18,10 +18,13 @@ $.log = {
     },
     add: function(data) {
         const self = this;
-        if (data.time > self.time) {
-            self.el.append(data.message + '\\r\\n');
-            self.el.scrollTop(self.el[0].scrollHeight - self.el.height());
-            self.time = data.time;
+        if (data.time >= self.time) {
+            const message = data.message + '\\r\\n';
+            if (self.el.text().substr(-message.length) !== message) {
+                self.el.append(message);
+                self.el.scrollTop(self.el[0].scrollHeight - self.el.height());
+                self.time = data.time;
+            }
         }
     }
 }
