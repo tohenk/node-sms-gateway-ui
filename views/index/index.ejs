@@ -1,5 +1,6 @@
 <div class="ui top attached stackable tabular menu">
-  <a class="active item" data-tab="queue">Queue</a>
+  <a class="active item" data-tab="status">Status</a>
+  <a class="item" data-tab="queue">Queue</a>
   <a class="item" data-tab="message">Message</a>
   <a class="item" data-tab="log">Logs</a>
   <a class="item" data-tab="client">Clients <span class="ui tiny label">0</span></a>
@@ -10,7 +11,10 @@
   <a class="item" data-tab="plugin">Plugins <span class="ui tiny label"><%= term.plugins.length %></span></a>
   <%_ } -%>
 </div>
-<div class="ui bottom attached active tab segment" data-tab="queue">
+<div class="ui bottom attached active tab segment" data-tab="status">
+<%- include('status') -%>
+</div>
+<div class="ui bottom attached tab segment" data-tab="queue">
 <%- include('queue') -%>
 </div>
 <div class="ui bottom attached tab segment" data-tab="message">
@@ -45,36 +49,45 @@ $.uiCon = {
     init: function() {
         const self = this;
         self.socket = io.connect(self.url, {reconnection: self.keepalive});
-        self.socket.on('connect', function() {
-            self.connected = true;
-            console.log('Socket connected');
-        });
-        self.socket.on('disconnect', function() {
-            self.connected = false;
-            console.log('Socket disconnected');
-        });
-        self.socket.on('new-terminal', function() {
-            window.location.reload();
-        });
-        self.socket.on('activity', function(data) {
-            $.log.add(data);
-            $.gwqueue.load();
-        });
-        self.socket.on('client', function(data) {
-            $.client.load();
-        });
-        self.socket.on('new-activity', function(type) {
-            $.gwqueue.load();
-            if (type == ${term.Storage.ACTIVITY_SMS} || type == ${term.Storage.ACTIVITY_INBOX}) {
-                $.message.load();
-            }
-        });
-        self.socket.on('queue-processed', function(data) {
-            $.gwqueue.load();
-        });
-        self.socket.on('ussd', function(data) {
-            $.term.receiveUssd(data);
-        });
+        self.socket
+            .on('connect', function() {
+                self.connected = true;
+                console.log('Socket connected');
+            })
+            .on('disconnect', function() {
+                self.connected = false;
+                console.log('Socket disconnected');
+            })
+            .on('new-terminal', function() {
+                window.location.reload();
+            })
+            .on('activity', function(data) {
+                $.log.add(data);
+                $.gwqueue.load();
+            })
+            .on('client', function(data) {
+                $.client.load();
+            })
+            .on('new-activity', function(type) {
+                $.gwqueue.load();
+                if (type == ${term.Storage.ACTIVITY_SMS} || type == ${term.Storage.ACTIVITY_INBOX}) {
+                    $.message.load();
+                }
+            })
+            .on('queue', function(data) {
+                $.gwqueue.updateStates(data.imsi);
+            })
+            .on('queue-done', function(data) {
+                $.gwqueue.updateStates(data.imsi);
+                $.gwqueue.reload();
+            })
+            .on('queue-processed', function(data) {
+                $.gwqueue.reload();
+            })
+            .on('ussd', function(data) {
+                $.term.receiveUssd(data);
+            })
+        ;
     }
 }
 // initialize

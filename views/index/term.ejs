@@ -2,12 +2,12 @@
   <div class="row">
     <div class="four wide column">
       <div class="ui fluid vertical pointing menu">
-      <%_ Object.keys(term.groups).forEach((group) => { -%>
+      <%_ Object.keys(term.groups).forEach(group => { -%>
         <div class="item header"><%= group ? group : 'ALL' %></div>
-        <%_ term.groups[group].forEach((terminal) => { -%>
+        <%_ term.groups[group].forEach(terminal => { -%>
         <a href="#" class="item" data-term="<%= terminal.name %>" data-operator="<%= terminal.info.network.operator %>"><i class="desktop icon"></i> <%= terminal.name %> <div class="ui tiny label"><%= terminal.info.network.operator %></div></a>
         <%_ }) -%>
-        <%_ }) -%>
+      <%_ }) -%>
       </div>
     </div>
     <div class="twelve wide column">

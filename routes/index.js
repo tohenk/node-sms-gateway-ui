@@ -45,9 +45,8 @@ function getQueue(req, res, next) {
         })
         .then(results => {
             results.forEach(queue => {
-                offset++;
                 result.items.push({
-                    nr: offset,
+                    nr: ++offset,
                     hash: queue.hash,
                     origin: queue.imsi,
                     type: queue.type,
@@ -78,9 +77,8 @@ function getMessage(req, res, next) {
         let offset = (page - 1) * pageSize;
         stor.getRecents(offset, pageSize).then(results => {
             results.forEach(queue => {
-                offset++;
                 result.items.push({
-                    nr: offset,
+                    nr: ++offset,
                     hash: queue.hash,
                     origin: queue.imsi,
                     type: queue.type,
@@ -140,7 +138,9 @@ function readMessage(req, res, next) {
             });
             Object.values(messages).forEach(msg => {
                 const time = moment(msg.time).format('DD MMM YYYY');
-                if (!result[time]) result[time] = [];
+                if (!result[time]) {
+                    result[time] = [];
+                }
                 result[time].push(msg);
             });
             // send content
@@ -169,27 +169,37 @@ function getParameters(data) {
             str = str.substr(0, str.length - 2);
         }
         str = str.replace(re, '.');
-        if ('.' == str.substr(-1)) str = str.substr(0, str.length - 1);
+        if ('.' == str.substr(-1)) {
+            str = str.substr(0, str.length - 1);
+        }
         const paths = str.split('.');
         let top = result;
         for (let i = 0; i < paths.length; i++) {
             const p = paths[i];
             if (i == paths.length - 1) {
                 let value = data[key];
-                if (value == 'on' || value == 'true') value = true;
-                if (value == 'off' || value == 'false') value = false;
+                if (value == 'on' || value == 'true') {
+                    value = true;
+                }
+                if (value == 'off' || value == 'false') {
+                    value = false;
+                }
                 if (isarray) {
                     if (Array.isArray(value)) {
                         top[p] = value;
                     } else {
-                        if (typeof top[p] == 'undefined') top[p] = [];
+                        if (typeof top[p] == 'undefined') {
+                            top[p] = [];
+                        }
                         top[p].push(value);
                     }
                 } else {
                     top[p] = value;
                 }
             } else {
-                if (typeof top[p] == 'undefined') top[p] = {};
+                if (typeof top[p] == 'undefined') {
+                    top[p] = {};
+                }
                 top = top[p];
             }
         }
@@ -198,9 +208,14 @@ function getParameters(data) {
 }
 
 /* GET home page. */
-router.get('/', (req, res, next) => {
+router.get('/', async (req, res, next) => {
+    // populate terminal stat
+    const term = req.app.term;
+    for (let i = 0; i < term.terminals.length; i++) {
+        const terminal = term.terminals[i];
+        terminal.stat = await terminal.getStat();
+    }
     res.render('index/index', {
-        title: 'Dashboard',
         sockaddress: `${req.protocol}://${req.get('host')}/ui`
     });
 });
@@ -285,6 +300,16 @@ router.post('/send-message', (req, res, next) => {
     }
 });
 
+router.get('/:imsi/stat', async (req, res, next) => {
+    const term = req.app.term;
+    const terminal = term.get(req.params.imsi);
+    if (terminal) {
+        res.json(await terminal.getStat());
+    } else {
+        next();
+    }
+});
+
 router.post('/:imsi/apply', (req, res, next) => {
     const term = req.app.term;
     const terminal = term.get(req.params.imsi);
@@ -302,7 +327,9 @@ router.post('/:imsi/apply', (req, res, next) => {
                 }
             });
             parameters.term.priority = parseInt(parameters.term.priority);
-            if (!parameters.term.operators) parameters.term.operators = [];
+            if (!parameters.term.operators) {
+                parameters.term.operators = [];
+            }
             terminal.readOptions(parameters.term);
             result.success = true;
             result.notice = 'Your changes has been successfuly applied.';
@@ -389,7 +416,9 @@ router.post('/tasks/:name', (req, res, next) => {
         case 'readmsg':
             if (req.body.type) {
                 term.pools.forEach(pool => {
-                    if (pool.con) pool.con.emit('check-message', req.body.type);
+                    if (pool.con) {
+                        pool.con.emit('check-message', req.body.type);
+                    }
                 });
                 result.success = term.pools.length ? true : false;
             }
@@ -397,7 +426,9 @@ router.post('/tasks/:name', (req, res, next) => {
         case 'resendmsg':
             if (req.body.since) {
                 term.pools.forEach(pool => {
-                    if (pool.con) pool.con.emit('resend-message', req.body.since);
+                    if (pool.con) {
+                        pool.con.emit('resend-message', req.body.since);
+                    }
                 });
                 result.success = term.pools.length ? true : false;
             }
@@ -405,7 +436,9 @@ router.post('/tasks/:name', (req, res, next) => {
         case 'report':
             if (req.body.since) {
                 term.pools.forEach(pool => {
-                    if (pool.con) pool.con.emit('check-report', req.body.since);
+                    if (pool.con) {
+                        pool.con.emit('check-report', req.body.since);
+                    }
                 });
                 result.success = term.pools.length ? true : false;
             }

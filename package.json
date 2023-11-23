@@ -1,6 +1,6 @@
 {
   "name": "@ntlab/sms-gateway-ui",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "description": "SMS Gateway Web Interface",
   "main": "index.js",
   "scripts": {

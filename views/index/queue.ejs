@@ -27,16 +27,47 @@ $.gwqueue = $.loader($('div[data-tab="queue"] table'), {
                 (item.origin ? '<div><div class="ui mini grey label"><i class="phone icon"></i>' + item.origin + '</div></div>' : '') + '</td>' +
             '<td>' + (item.data ? item.data : '') + '</td>' +
             '<td><i class="' + (item.processed ? 'green check' : 'clock') + ' icon"></i></td>' +
-            '<td>' + this.formatStatus(item.status) + '</td>' +
+            '<td>' + this.formatStatus(item.status, item.processed) + '</td>' +
             '</tr>');
+    },
+    loaded: function() {
+        const self = this;
+        if (self.loading) {
+            self.loading = false;
+        }
     }
 });
-$.gwqueue.formatStatus = function(status) {
-    switch (status) {
-        case 0:
-            return '<i class="red times icon"></i>';
-        case 1:
-            return '<i class="green check icon"></i>';
+$.gwqueue.formatStatus = function(status, processed) {
+    if (processed) {
+        switch (status) {
+            case 0:
+                return '<i class="red times icon"></i>';
+            case 1:
+                return '<i class="green check icon"></i>';
+        }
+    }
+    return '<i class="question icon"></i>';
+}
+$.gwqueue.updateStates = function(imsi) {
+    const stat = $('div[data-stat="' + imsi + '"]');
+    if (stat.length) {
+        $.get('/IMSI/stat'.replace(/IMSI/, imsi))
+            .done(function(json) {
+                const stats = Object.keys(json);
+                if (stats.length) {
+                    stats.forEach(key => {
+                        stat.find('[data-key="' + key + '"] .value').html(json[key].value ? json[key].value : '&ndash;');
+                    });
+                }
+            })
+        ;
+    }
+}
+$.gwqueue.reload = function() {
+    const self = this;
+    if (!self.loading) {
+        self.loading = true;
+        self.load();
     }
 }
 `) -%>
