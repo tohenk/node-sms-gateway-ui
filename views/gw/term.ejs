@@ -16,7 +16,7 @@
           <i class="desktop icon"></i>
           <div class="content">
             <div class="header"><%= _('Terminal configuration') %></div>
-            <p><%= _('Here you can configure the terminal options. Once complete, clik <em>Apply</em> to allow the changes to take effects.') %></p>
+            <p><%- _('Here you can configure the terminal options. Once complete, clik <em>Apply</em> to allow the changes to take effects.') %></p>
           </div>
         </div>
         <h4 class="ui dividing header"><%= _('Voice call') %></h4>
@@ -134,6 +134,6 @@ $('a[data-term]').on('click', function(e) {
     const a = $(this);
     a.siblings('a').removeClass('active');
     a.addClass('active');
-    $.term.handle(a.attr('data-term'), a.attr('data-operator'));
+    $.term.handle(a.data('term'), a.data('operator'));
 }).filter(':first').click();
 `) -%>

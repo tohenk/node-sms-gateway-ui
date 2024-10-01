@@ -192,8 +192,8 @@ $.term = {
     handle: function(terminal, operator) {
         const self = this;
         self.form.attr('action', '${route('Gw', {name: 'term-apply', imsi: 'IMSI'})}'.replace(/IMSI/, terminal));
-        self.form.attr('data-term', terminal);
-        self.form.attr('data-operator', operator);
+        self.form.data('term', terminal);
+        self.form.data('operator', operator);
         self.form.find('.message .header').html(terminal + ' <span class="ui tiny blue label">' + operator + '</span>');
         self.loadConfig();
     },
