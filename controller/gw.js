@@ -126,7 +126,7 @@ class GwController extends Controller
             const term = req.app.term;
             const terminal = term.get(req.params.imsi);
             if (terminal) {
-                const parameters = this.getParameters(req.body);
+                const parameters = this.fixParameters(req.body);
                 const result = {};
                 if (isNaN(parameters.term.priority)) {
                     result.success = false;
@@ -385,53 +385,22 @@ class GwController extends Controller
         res.json(result);
     }
     
-    getParameters(data) {
-        const result = {};
-        const re = /(\]\[|\]|\[)/g;
-        Object.keys(data).forEach(key => {
-            let isarray = false;
-            let str = key;
-            if ('[]' === str.substr(-2)) {
-                isarray = true;
-                str = str.substr(0, str.length - 2);
-            }
-            str = str.replace(re, '.');
-            if ('.' === str.substr(-1)) {
-                str = str.substr(0, str.length - 1);
-            }
-            const paths = str.split('.');
-            let top = result;
-            for (let i = 0; i < paths.length; i++) {
-                const p = paths[i];
-                if (i === paths.length - 1) {
-                    let value = data[key];
-                    if (value === 'on' || value === 'true') {
-                        value = true;
+    fixParameters(data) {
+        if (typeof data === 'object') {
+            Object.keys(data).forEach(k => {
+                if (typeof data[k] === 'string') {
+                    if (['on', 'true'].indexOf(data[k]) >= 0) {
+                        data[k] = true;
                     }
-                    if (value === 'off' || value === 'false') {
-                        value = false;
-                    }
-                    if (isarray) {
-                        if (Array.isArray(value)) {
-                            top[p] = value;
-                        } else {
-                            if (top[p] === undefined) {
-                                top[p] = [];
-                            }
-                            top[p].push(value);
-                        }
-                    } else {
-                        top[p] = value;
+                    if (['off', 'false'].indexOf(data[k]) >= 0) {
+                        data[k] = false;
                     }
                 } else {
-                    if (top[p] === undefined) {
-                        top[p] = {};
-                    }
-                    top = top[p];
+                    this.fixParameters(data[k]);
                 }
-            }
-        });
-        return result;
+            });
+        }
+        return data;
     }
 
     /**

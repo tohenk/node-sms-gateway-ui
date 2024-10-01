@@ -56,8 +56,8 @@ class ExpressApp {
         this.app.use(rootPath, express.static(Assets));
 
         // session
-        let sessiondir = options.sessiondir || path.join(__dirname, 'sessions');
-        let secret = options.sessionsecret || 'nt-sms-gateway';
+        const sessiondir = options.sessiondir || path.join(__dirname, 'sessions');
+        const secret = options.sessionsecret || 'nt-sms-gateway';
         this.app.use(session({
                 name: 'smsgw',
                 store: new FileStore({path: sessiondir}),
