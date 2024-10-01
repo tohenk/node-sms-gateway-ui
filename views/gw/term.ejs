@@ -1,0 +1,139 @@
+<div class="ui stackable grid">
+  <div class="row">
+    <div class="four wide column">
+      <div class="ui fluid vertical pointing menu">
+      <%_ Object.keys(term.groups).forEach(group => { -%>
+        <div class="item header"><%= group ? group : 'ALL' %></div>
+        <%_ term.groups[group].forEach(terminal => { -%>
+        <a href="#" class="item" data-term="<%= terminal.name %>" data-operator="<%= terminal.info.network.operator %>"><i class="desktop icon"></i> <%= terminal.name %> <div class="ui tiny label"><%= terminal.info.network.operator %></div></a>
+        <%_ }) -%>
+      <%_ }) -%>
+      </div>
+    </div>
+    <div class="twelve wide column">
+      <form class="ui form term-config">
+        <div class="ui icon message">
+          <i class="desktop icon"></i>
+          <div class="content">
+            <div class="header"><%= _('Terminal configuration') %></div>
+            <p><%= _('Here you can configure the terminal options. Once complete, clik <em>Apply</em> to allow the changes to take effects.') %></p>
+          </div>
+        </div>
+        <h4 class="ui dividing header"><%= _('Voice call') %></h4>
+        <div class="two fields">
+          <div class="field">
+            <div class="ui toggle checkbox">
+              <input type="checkbox" name="term[rejectCall]" class="hidden">
+              <label><%= _('Reject incoming call') %></label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui toggle checkbox">
+              <input type="checkbox" name="term[allowCall]" class="hidden">
+              <label><%= _('Allow outgoing call') %></label>
+            </div>
+          </div>
+        </div>
+        <h4 class="ui dividing header"><%= _('Message') %></h4>
+        <div class="two fields">
+          <div class="field">
+            <div class="ui toggle checkbox">
+              <input type="checkbox" name="term[sendMessage]" class="hidden">
+              <label><%= _('Send message') %><br/>
+                <small><%= _('Uncheck this option to prevent outgoing message to be sent') %></small>
+              </label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui toggle checkbox">
+              <input type="checkbox" name="term[receiveMessage]" class="hidden">
+              <label><%= _('Receive message') %><br/>
+                <small><%= _('Uncheck this option to ignore received message processing') %></small>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="two fields">
+          <div class="field">
+            <div class="ui toggle checkbox">
+              <input type="checkbox" name="term[deleteMessage]" class="hidden">
+              <label><%= _('Delete message') %><br/>
+                <small><%= _('Allow message deleted from its storage once its read') %></small>
+              </label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui toggle checkbox">
+              <input type="checkbox" name="term[replyBlockedMessage]" class="hidden">
+              <label><%= _('Reply blocked message') %><br/>
+                <small><%= _('When receiving message is disabled, reply incoming message with blocked message') %></small>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="two fields">
+          <div class="field">
+            <div class="ui toggle checkbox">
+              <input type="checkbox" name="term[deliveryReport]" class="hidden">
+              <label><%= _('Delivery report') %><br/>
+                <small><%= _('Request for delivery report for sent message') %></small>
+              </label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui toggle checkbox">
+              <input type="checkbox" name="term[requestReply]" class="hidden">
+              <label><%= _('Request message reply') %><br/>
+                <small><%= _('Request for reply for sent message') %></small>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="two fields">
+          <div class="field">
+            <div class="ui toggle checkbox">
+              <input type="checkbox" name="term[emptyWhenFull]" class="hidden">
+              <label><%= _('Empty message storage when full') %></label>
+            </div>
+          </div>
+        </div>
+        <h4 class="ui dividing header"><%= _('Group and priority') %></h4>
+        <div class="two fields">
+          <div class="field">
+            <label><%= _('Group') %></label>
+            <input type="text" name="term[group]" value="" placeholder="<%= _('Group') %>">
+          </div>
+          <div class="field">
+            <label><%= _('Priority') %></label>
+            <input type="text" name="term[priority]" value="0" placeholder="<%= _('Priority') %>">
+          </div>
+        </div>
+        <h4 class="ui dividing header"><%= _('Operators') %></h4>
+        <div class="field">
+          <label><%= _('Select operators') %></label>
+          <select name="term[operators][]" class="ui dropdown" multiple>
+          <%_ Object.keys(term.operators).forEach((operator) => { -%>
+            <option value="<%= operator %>"><%= operator %></option>
+          <%_ }) -%>
+          </select>
+          <small><%= _('Select which operators number allowed by this terminal, leave empty to allow all operators') %></small>
+        </div>
+        <button class="ui primary button" type="submit"><%= _('Apply') %></button>
+        <button class="ui right floated labeled icon button btn-ussd"><i class="phone volume icon"></i><%= _('USSD') %></button>
+        <button class="ui right floated labeled icon button btn-message"><i class="envelope icon"></i><%= _('Message') %></button>
+        <button class="ui right floated labeled icon button btn-dial"><i class="phone icon"></i><%= _('Dial') %></button>
+      </form>
+    </div>
+  </div>
+</div>
+<%_ script.create('JQuery')
+  .add(`
+$.term.init();
+$('a[data-term]').on('click', function(e) {
+    e.preventDefault();
+    const a = $(this);
+    a.siblings('a').removeClass('active');
+    a.addClass('active');
+    $.term.handle(a.attr('data-term'), a.attr('data-operator'));
+}).filter(':first').click();
+`) -%>

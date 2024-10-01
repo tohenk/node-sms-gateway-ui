@@ -1,3 +1,6 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
+<h2><%= error instanceof Error ? error.constructor.name : _('An error occured!') %></h2>
+<%_ if (error) { -%>
 <pre><%= error.stack %></pre>
+<%_ } else { -%>
+<pre><%= _(message) %></pre>
+<%_ } -%>

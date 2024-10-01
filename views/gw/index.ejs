@@ -1,0 +1,98 @@
+<div class="ui top attached stackable tabular menu">
+  <a class="active item" data-tab="status"><%= _('Status') %></a>
+  <a class="item" data-tab="queue"><%= _('Queue') %></a>
+  <a class="item" data-tab="message"><%= _('Message') %></a>
+  <a class="item" data-tab="log"><%= _('Logs') %></a>
+  <a class="item" data-tab="client"><%= _('Clients') %> <span class="ui tiny label">0</span></a>
+  <%_ if (term.terminals.length) { -%>
+  <a class="item" data-tab="terminal"><%= _('Terminal') %> <span class="ui tiny label"><%= term.terminals.length %></span></a>
+  <%_ } -%>
+  <%_ if (term.plugins.length) { -%>
+  <a class="item" data-tab="plugin"><%= _('Plugins') %> <span class="ui tiny label"><%= term.plugins.length %></span></a>
+  <%_ } -%>
+</div>
+<div class="ui bottom attached active tab segment" data-tab="status">
+<%- include('status') -%>
+</div>
+<div class="ui bottom attached tab segment" data-tab="queue">
+<%- include('queue') -%>
+</div>
+<div class="ui bottom attached tab segment" data-tab="message">
+<%- include('message') -%>
+</div>
+<div class="ui bottom attached tab segment" data-tab="log">
+<%- include('log') -%>
+</div>
+<div class="ui bottom attached tab segment" data-tab="client">
+<%- include('client') -%>
+</div>
+<%_ if (term.terminals.length) { -%>
+<%- include('termhandler') -%>
+<div class="ui bottom attached tab segment" data-tab="terminal">
+<%- include('term') -%>
+</div>
+<%_ } -%>
+<%_ if (term.plugins.length) { -%>
+<%- include('pluginhandler') -%>
+<div class="ui bottom attached tab segment" data-tab="plugin">
+<%- include('plugin') -%>
+</div>
+<%_ } -%>
+<%_ script.create('JQuery')
+  .useDependencies(['SocketIO', 'SemanticUI/Dialog/Wait', 'SemanticUI/Dialog/Input'])
+  .addMiddle(`
+$.uiCon = {
+    connected: false,
+    keepalive: true,
+    url: '${sockaddress}',
+    init: function() {
+        const self = this;
+        self.socket = io.connect(self.url, {reconnection: self.keepalive});
+        self.socket
+            .on('connect', function() {
+                self.connected = true;
+                console.log('Socket connected');
+            })
+            .on('disconnect', function() {
+                self.connected = false;
+                console.log('Socket disconnected');
+            })
+            .on('new-terminal', function() {
+                window.location.reload();
+            })
+            .on('activity', function(data) {
+                $.log.add(data);
+                $.gwqueue.load();
+            })
+            .on('client', function(data) {
+                $.client.load();
+            })
+            .on('new-activity', function(type) {
+                $.gwqueue.load();
+                if (type === ${term.Storage.ACTIVITY_SMS} || type === ${term.Storage.ACTIVITY_INBOX}) {
+                    $.message.load();
+                }
+            })
+            .on('queue', function(data) {
+                $.gwqueue.updateStates(data.imsi);
+            })
+            .on('queue-done', function(data) {
+                $.gwqueue.updateStates(data.imsi);
+                $.gwqueue.reload();
+            })
+            .on('queue-processed', function(data) {
+                $.gwqueue.reload();
+            })
+            .on('ussd', function(data) {
+                $.term.receiveUssd(data);
+            })
+        ;
+    }
+}
+`)
+  .addLast(`
+$('.menu .item').tab();
+$('.ui.checkbox').checkbox();
+$('select.dropdown').dropdown();
+$.uiCon.init();
+`) -%>

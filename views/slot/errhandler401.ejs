@@ -3,11 +3,13 @@
   .addMiddle(`
 $.errhandler.register(401, function() {
     const dlgId = 'err401';
-    if ($.ntdlg.isVisible(dlgId)) return;
-    $.ntdlg.dialog(dlgId, 'Information', 'Your session has been expired, please try to login again!', $.ntdlg.ICON_ALERT, {
-        'okay': {
+    if ($.ntdlg.isVisible(dlgId)) {
+        return;
+    }
+    $.ntdlg.dialog(dlgId, '${_('Information')}', '${_('Your session has been expired, please try to login again!')}', $.ntdlg.ICON_ALERT, {
+        okay: {
             type: 'green approve',
-            caption: '<i class="check icon"></i>Ok',
+            caption: '<i class="check icon"></i>${_('Ok')}',
             handler: function() {
                 window.location.reload();
             }

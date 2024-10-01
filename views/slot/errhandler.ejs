@@ -14,7 +14,7 @@ $.define('errhandler', {
         const self = this;
         if (self.handlers[code]) {
             for (let i = 0; i < self.handlers[code].length; i++) {
-                if (typeof(self.handlers[code][i]) == 'function') {
+                if (typeof self.handlers[code][i] === 'function') {
                     self.handlers[code][i].call();
                 }
             }

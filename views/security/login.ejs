@@ -1,35 +1,35 @@
 <div id="login-container" class="ui center aligned stackable grid">
   <div class="six wide column">
     <h2 class="ui image header">
-      <img src="/images/logo.png" class="image">
-      <div class="content">Log-in to <%= apptitle %></div>
+      <img src="<%= path('/images/logo.png') %>" class="image">
+      <div class="content"><%= _('Log-in to %APP%', {APP: apptitle}) %></div>
     </h2>
-    <form class="ui large form login" action="/login">
+    <form class="ui large form login" action="<%= route('Security', {name: 'login'}) %>">
       <input type="hidden" name="continue" value="<%= redirect %>">
       <div class="ui left aligned segment">
         <div class="ui red message hidden">
           <i class="red exclamation triangle icon"></i><span class="errmsg"></span>
         </div>
         <div class="field">
-          <div class="ui left icon input">
+          <div class="ui big left icon input">
             <i class="user icon"></i>
-            <input type="text" name="username" class="required" placeholder="Username">
+            <input type="text" name="username" class="required" placeholder="<%= _('Username') %>">
           </div>
         </div>
         <div class="field">
-          <div class="ui left icon input">
+          <div class="ui big left icon input">
             <i class="lock icon"></i>
-            <input type="password" name="password" class="required" placeholder="Password">
+            <input type="password" name="password" class="required" placeholder="<%= _('Password') %>">
           </div>
         </div>
-        <button class="ui fluid large submit button" type="submit">Login</button>
+        <button class="ui fluid large submit button" type="submit"><%= _('Login') %></button>
       </div>
     </form>
   </div>
 </div>
 <%_ script.create('JQuery')
   .useDependencies(['JQuery/Util', 'JQuery/FormPost'])
-  .add(`
+  .addMiddle(`
 $.login = function(form) {
     const fp = $.formpost(form, {progress: false, xhr: true});
     const err = fp.errhelper;
@@ -44,7 +44,7 @@ $.login = function(form) {
         })
         .on('formsaved', function(e, json) {
             if (json.url) {
-                if (typeof($.loginSuccess) == 'function') {
+                if (typeof $.loginSuccess === 'function') {
                     $.loginSuccess(json.url);
                 } else {
                     window.location.href = json.url;
@@ -56,5 +56,7 @@ $.login = function(form) {
     ;
     form.find('input[name=username]').focus();
 }
+`)
+  .addLast(`
 $.login($('form.login'));
 `) -%>

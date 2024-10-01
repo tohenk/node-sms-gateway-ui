@@ -1,0 +1,80 @@
+<h3 class="ui header x-title"></h3>
+<table class="ui selectable celled table">
+  <thead>
+    <tr>
+      <th><%= _('#') %></th>
+      <th><%= _('Time') %></th>
+      <th><%= _('Hash') %></th>
+      <th><%= _('Type') %></th>
+      <th><%= _('Address') %></th>
+      <th><%= _('Data') %></th>
+      <th><%= _('Processed') %></th>
+      <th><%= _('Status') %></th>
+    </tr>
+  </thead>
+</table>
+<%_ script.create('JQuery')
+  .useDependencies('SemanticUI/Loader')
+  .addMiddle(`
+$.gwqueue = $.loader($('div[data-tab="queue"] table'), {
+    url: '${route('Gw', {name: 'queue-page', page: 'PAGE'})}',
+    formatRow: function(item) {
+        return $('<tr><td>' + item.nr + '</td>' +
+            '<td>' + item.time + '</td>' +
+            '<td>' + item.hash.substr(0, 8) + '</td>' +
+            '<td class="ui center aligned">' + this.icon(item.type) + '</td>' +
+            '<td>' + (item.address ? item.address : '') +
+                (item.origin ? '<div><div class="ui mini grey label"><i class="phone icon"></i>' + item.origin + '</div></div>' : '') + '</td>' +
+            '<td>' + (item.data ? item.data : '') + '</td>' +
+            '<td><i class="' + (item.processed ? 'green check' : 'clock') + ' icon"></i></td>' +
+            '<td>' + this.formatStatus(item.status, item.processed, item.type) + '</td>' +
+            '</tr>');
+    },
+    loaded: function() {
+        const self = this;
+        if (self.loading) {
+            self.loading = false;
+        }
+    }
+});
+$.gwqueue.formatStatus = function(status, processed, type) {
+    if (processed) {
+        switch (status) {
+            case 0:
+                if ([${term.Storage.ACTIVITY_RING}, ${term.Storage.ACTIVITY_INBOX}, ${term.Storage.ACTIVITY_CUSD}].indexOf(type) >= 0) {
+                    return '<i class="red ban icon"></i>';
+                } else {
+                    return '<i class="red times icon"></i>';
+                }
+            case 1:
+                return '<i class="green check icon"></i>';
+        }
+    }
+    return '<i class="question icon"></i>';
+}
+$.gwqueue.updateStates = function(imsi) {
+    const stat = $('div[data-stat="' + imsi + '"]');
+    if (stat.length) {
+        $.get('${route('Gw', {name: 'term-stat', imsi: 'IMSI'})}'.replace(/IMSI/, imsi))
+            .done(function(json) {
+                const stats = Object.keys(json);
+                if (stats.length) {
+                    stats.forEach(key => {
+                        stat.find('[data-key="' + key + '"] .value').html(json[key].value ? json[key].value : '&ndash;');
+                    });
+                }
+            })
+        ;
+    }
+}
+$.gwqueue.reload = function() {
+    const self = this;
+    if (!self.loading) {
+        self.loading = true;
+        self.load();
+    }
+}
+`)
+  .addLast(`
+$.gwqueue.load();
+`) -%>

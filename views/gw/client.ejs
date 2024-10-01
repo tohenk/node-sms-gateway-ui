@@ -1,0 +1,32 @@
+<table class="ui selectable celled table">
+  <thead>
+    <tr>
+      <th><%= _('#') %></th>
+      <th><%= _('Id') %></th>
+      <th><%= _('Address') %></th>
+      <th><%= _('Time') %></th>
+      <th><%= _('Group') %></th>
+    </tr>
+  </thead>
+</table>
+<%_ script.create('JQuery')
+  .useDependencies('SemanticUI/Loader')
+  .addMiddle(`
+$.client = $.loader($('div[data-tab="client"] table'), {
+    url: '${route('Gw', {name: 'client'})}',
+    formatRow: function(item) {
+        return $('<tr><td>' + item.nr + '</td>' +
+            '<td>' + item.id + '</td>' +
+            '<td>' + item.address + '</td>' +
+            '<td>' + (item.time ? item.time : 'n/a') + '</td>' +
+            '<td>' + (item.group ? item.group : '&ndash;') + '</td>' +
+            '</tr>');
+    },
+    loaded: function(json) {
+        $('a[data-tab="client"] span.label').text(json.items.length);
+    }
+});
+`)
+  .addLast(`
+$.client.load();
+`) -%>

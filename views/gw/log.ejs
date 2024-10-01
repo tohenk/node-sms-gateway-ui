@@ -1,0 +1,34 @@
+<div class="ui form">
+  <textarea class="activity" rows="30" readonly></textarea>
+</div>
+<%_ script.create('JQuery')
+  .addMiddle(`
+$.log = {
+    el: $('textarea.activity'),
+    url: '${route('Gw', {name: 'activity'})}',
+    load: function() {
+        const self = this;
+        $.get(self.url)
+            .done(function(json) {
+                if (json.logs) {
+                    self.el.text(json.logs);
+                    self.time = json.time;
+                }
+            });
+    },
+    add: function(data) {
+        const self = this;
+        if (data.time >= self.time) {
+            const message = data.message + '\\r\\n';
+            if (self.el.text().substr(-message.length) !== message) {
+                self.el.append(message);
+                self.el.scrollTop(self.el[0].scrollHeight - self.el.height());
+                self.time = data.time;
+            }
+        }
+    }
+}
+`)
+  .addLast(`
+$.log.load();
+`) -%>

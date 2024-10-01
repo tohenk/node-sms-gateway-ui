@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2018-2023 Toha <tohenk@yahoo.com>
+ * Copyright (c) 2018-2024 Toha <tohenk@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -38,18 +38,22 @@ class ExpressApp {
 
     initialize(options) {
         options = options || {};
-
+        const rootPath = options.rootPath || '/';
         this.app.factory = Factory.SemanticUI;
 
         // view engine setup
         this.app.set('views', path.join(__dirname, 'views'));
         this.app.set('view engine', 'ejs');
 
+        // environment
+        this.app.set('env', process.env.NODE_ENV || 'development');
+        this.app.set('root', rootPath);
+
         this.app.use(logger('dev'));
         this.app.use(express.json());
-        this.app.use(express.urlencoded({extended: false}));
-        this.app.use(express.static(path.join(__dirname, 'public')));
-        this.app.use(express.static(Assets));
+        this.app.use(express.urlencoded({extended: true}));
+        this.app.use(rootPath, express.static(path.join(__dirname, 'public')));
+        this.app.use(rootPath, express.static(Assets));
 
         // session
         let sessiondir = options.sessiondir || path.join(__dirname, 'sessions');
@@ -73,11 +77,13 @@ class ExpressApp {
         this.app.use(Helper.core());
         this.app.use(Helper.menu());
         this.app.use(Helper.pager());
+        this.app.use(require('./helper/app')());
 
-        // routes
-        this.app.use('/', require('./routes/index'));
-        this.app.use('/', require('./routes/security'));
-        this.app.use('/', require('./routes/plugin'));
+        // controllers
+        const Controller = require('@ntlab/express-controller');
+        Controller.scan(path.join(__dirname, 'controller'), controller => {
+            controller(this.app, rootPath);
+        });
 
         // catch 404 and forward to error handler
         this.app.use((req, res, next) => {
@@ -95,13 +101,6 @@ class ExpressApp {
             res.render('error/error');
         });
 
-        ScriptManager.addDefault('SemanticUI');
-        ScriptManager.addDefaultAsset(ScriptAsset.STYLESHEET, 'app.css');
-        let useCdn = options.useCdn || false;
-        if (useCdn) {
-            ScriptManager.parseCdn(CDN);
-        }
-
         // relative from layout
         this.app.slots = {
             mainmenu: {
@@ -111,14 +110,23 @@ class ExpressApp {
                 view: '../slot/addons'
             }
         }
-    }
 
+        ScriptManager.addDefault('SemanticUI');
+        ScriptManager.addDefaultAsset(ScriptAsset.STYLESHEET, 'app.css');
+        if (options.useCdn) {
+            ScriptManager.parseCdn(CDN);
+        }
+        ScriptManager.require('JQuery/FormPost')
+            .setOption('redir-delay', 1000);
+        ScriptManager.translator = require('@ntlab/express-controller/translator')._;
+        ScriptManager.config = options;
+    }
 }
 
 let app = null;
 
 function run(options) {
-    if (app == null) {
+    if (app === null) {
         app = new ExpressApp();
         app.initialize(options);
     }

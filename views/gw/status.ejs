@@ -1,0 +1,24 @@
+<div class="ui centered stackable grid">
+  <%_ term.terminals.forEach(terminal => { -%>
+  <div class="six wide column">
+    <div class="ui fluid card">
+      <div class="content">
+        <div class="ui right floated tiny label"><%= terminal.info.network.operator %></div>
+        <div class="item header"><i class="ui phone icon"></i><%= terminal.name %></div>
+      </div>
+      <div class="extra content" data-stat="<%= terminal.name %>">
+        <div class="ui divided items">
+          <%_ Object.keys(terminal.stat).forEach(stat => { -%>
+          <div class="center aligned item">
+            <div class="ui <%- stat === 'fail' ? 'red ' : (stat === 'success' ? 'blue ' : '') %>fluid tiny statistic" data-key="<%= stat %>">
+              <div class="value"><%- terminal.stat[stat].value ? terminal.stat[stat].value : '&ndash;' %></div>
+              <div class="label"><%- _(terminal.stat[stat].label) %></div>
+            </div>
+          </div>
+          <%_ }) -%>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%_ }) -%>
+</div>
