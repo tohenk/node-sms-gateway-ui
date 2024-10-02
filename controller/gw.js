@@ -37,8 +37,15 @@ class GwController extends Controller
                 const terminal = term.terminals[i];
                 terminal.stat = await terminal.getStat();
             }
+            const socketOptions = {reconnection: true};
+            if (req.app.get('root') !== '/') {
+                socketOptions.path = req.getPath('/socket.io/');
+            }
             res.render('gw/index', {
-                sockaddress: `${req.protocol}://${req.get('host')}/ui`
+                socket: {
+                    url: req.getUri('/ui'),
+                    options: socketOptions
+                }
             });
         });
         this.addRoute('about', 'get', '/about', (req, res, next) => {

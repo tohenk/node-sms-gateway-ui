@@ -43,11 +43,10 @@
   .addMiddle(`
 $.uiCon = {
     connected: false,
-    keepalive: true,
-    url: '${sockaddress}',
+    data: ${s(socket, 1)},
     init: function() {
         const self = this;
-        self.socket = io.connect(self.url, {reconnection: self.keepalive});
+        self.socket = io.connect(self.data.url, self.data.options);
         self.socket
             .on('connect', function() {
                 self.connected = true;

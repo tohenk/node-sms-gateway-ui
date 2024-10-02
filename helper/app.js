@@ -26,6 +26,7 @@ const Helper = require('@ntlab/express-middleware/lib/helper');
 const HelperFunctions = require('@ntlab/express-middleware/lib/fn');
 const Controller = require('@ntlab/express-controller');
 const Translator = require('@ntlab/express-controller/translator');
+const Stringify = require('@ntlab/ntlib/stringify');
 const { ScriptManager } = require('@ntlab/ntjs');
 const { minify_sync } = require('terser');
 
@@ -35,14 +36,15 @@ const { minify_sync } = require('terser');
 class AppFunctions extends HelperFunctions {
 
     initialize() {
-        this.exportFn(this.app.locals, () => this.AppFunctions());
+        this.exportFn(this.app.locals, () => this.ViewFunctions());
         this.exportFn(this.res.req, () => this.RequestFunctions());
         this.exportFn(this.res, () => this.ResponseFunctions());
     }
 
-    AppFunctions() {
+    ViewFunctions() {
         return {
             _: Translator._,
+            s: (o, l = 0) => Stringify.from(o, l),
             route: (name, parameters) => this.genRoute(name, parameters),
             path: path => this.genPath(path),
         }
@@ -50,7 +52,9 @@ class AppFunctions extends HelperFunctions {
 
     RequestFunctions() {
         return {
-            getUri: () => this.getUri(),
+            getUri: (path = null) => this.getUri(path),
+            getPath: path => this.genPath(path),
+            getRoute: (name, parameters) => this.genRoute(name, parameters),
         }
     }
 
@@ -61,11 +65,14 @@ class AppFunctions extends HelperFunctions {
         }
     }
 
-    getUri() {
+    getUri(path = null) {
         const [host, port] = this.res.req.headers.host.split(':');
         let uri = `${this.res.req.protocol}://${this.res.req.hostname}`;
         if ((this.res.req.protocol === 'http' && port != 80) || (this.res.req.protocol === 'https' && port != 443)) {
             uri += `:${port}`;
+        }
+        if (path) {
+            uri += this.genPath(path);
         }
         return uri;
     }
@@ -89,6 +96,19 @@ class AppFunctions extends HelperFunctions {
     }
 
     genPath(path) {
+        if (Array.isArray(path)) {
+            path = path.map(p => this.genPath(p));
+        } else {
+            if (typeof path === 'string' && !path.match(/http(s)?:\/\//) && path.substr(0, 1) === '/') {
+                let rootPath = this.app.get('root');
+                if (rootPath.substr(-1) === '/') {
+                    rootPath = rootPath.substr(0, rootPath.length - 1);
+                }
+                if (rootPath) {
+                    path = rootPath + path;
+                }
+            }
+        }
         return path;
     }
 }

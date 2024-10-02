@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title><%- sitetitle %></title>
-<%_ stylesheets().forEach((css) => { -%>
+<%_ stylesheets().forEach(css => { -%>
 <link rel="stylesheet" href="<%- path(css) %>" />
 <%_ }) -%>
 <%_ if (mainmenu = slot('mainmenu')) { -%>
@@ -27,7 +27,7 @@
   <%_ if ((addons = slot('addons')) && (addons = include(addons))) { -%>
   <%- addons -%>
   <%_ } -%>
-  <%_ javascripts().forEach((js) => { -%>
+  <%_ javascripts().forEach(js => { -%>
   <script type="text/javascript" src="<%- path(js) %>"></script>
   <%_ }) -%>
   <%_ if ((scriptContent = scripts()).length) { -%>

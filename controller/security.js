@@ -36,7 +36,7 @@ class SecurityController extends Controller
                 redir = req.query.r;
             }
             res.app.slots.mainmenu.enabled = false;
-            res.render('security/login', {redirect: redir ? redir : '/'});
+            res.render('security/login', {redirect: redir ? redir : req.getPath('/')});
         });
         this.addRoute('login', 'post', '/login', (req, res, next) => {
             const result = {
@@ -45,7 +45,7 @@ class SecurityController extends Controller
             if (req.user.authenticate(req.body.username, req.body.password)) {
                 req.user.login();
                 result.success = true;
-                result.url = req.body.continue ? req.body.continue : '/';
+                result.url = req.body.continue ? req.body.continue : req.getPath('/');
             } else {
                 result.error = this._('Invalid username and/or password');
             }
@@ -55,7 +55,7 @@ class SecurityController extends Controller
             if (req.user) {
                 req.user.logout();
             }
-            res.redirect('/');
+            res.redirect(req.getPath('/'));
         });
     }
 

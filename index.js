@@ -71,7 +71,12 @@ class ExpressApp {
         );
 
         // security
-        this.app.use(Security.core());
+        const securityOptions = {};
+        if (rootPath !== '/') {
+            securityOptions.loginroute = options.getPath('/login');
+            securityOptions.logoutroute = options.getPath('/logout');
+        }
+        this.app.use(Security.core(securityOptions));
 
         // app helpers
         this.app.use(Helper.core());
