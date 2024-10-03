@@ -131,7 +131,7 @@ $.term = {
     },
     receiveUssd: function(data) {
         const self = this;
-        if (self.current === data.imsi && self.ussdfeedback) {
+        if (self.current == data.imsi && self.ussdfeedback) {
             let message = self.ussdfeedback.val();
             if (message.length) {
                 message += '\\r\\n';
