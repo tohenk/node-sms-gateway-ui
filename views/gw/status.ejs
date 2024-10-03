@@ -1,3 +1,4 @@
+<%_ if (term.terminals.length) { -%>
 <div class="ui centered stackable grid">
   <%_ term.terminals.forEach(terminal => { -%>
   <div class="six wide column">
@@ -22,3 +23,13 @@
   </div>
   <%_ }) -%>
 </div>
+<%_ } else { -%>
+<div class="ui placeholder segment" style="min-height: 75vh;">
+  <div class="ui icon header">
+    <i class="phone slash icon"></i>
+    <div class="ui big hidden divider"></div>
+    <%= _('Currently, no connected terminal available.') %><br/>
+    <%= _('Once a connection established, it will appear here.') %>
+  </div>
+</div>
+<%_ } -%>
