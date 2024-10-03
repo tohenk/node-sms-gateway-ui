@@ -4,7 +4,9 @@
 $.term = {
     notifyResult: function(result) {
         if (result.success) {
-            $.queue.load($.queue.page);
+            if ($.gwqueue !== undefined) {
+                $.gwqueue.load($.gwqueue.page);
+            }
             $.notify(result.notice, 'success');
         } else {
             $.notify(result.error, 'error');
