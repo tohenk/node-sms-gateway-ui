@@ -52,7 +52,7 @@ class AppFunctions extends HelperFunctions {
 
     RequestFunctions() {
         return {
-            getUri: (path = null) => this.getUri(path),
+            getUri: (parameters = null) => this.getUri(parameters),
             getPath: path => this.genPath(path),
             getRoute: (name, parameters) => this.genRoute(name, parameters),
         }
@@ -65,10 +65,23 @@ class AppFunctions extends HelperFunctions {
         }
     }
 
-    getUri(path = null) {
+    getUri(parameters = null) {
+        let path, noproto = false;
+        if (typeof parameters === 'string') {
+            path = parameters;
+            parameters = {};
+        }
+        if (typeof parameters === 'object') {
+            if (parameters.path) {
+                path = parameters.path;
+            }
+            if (parameters.noproto) {
+                noproto = true;
+            }
+        }
         const [host, port] = this.res.req.headers.host.split(':');
-        let uri = `${this.res.req.protocol}://${this.res.req.hostname}`;
-        if ((this.res.req.protocol === 'http' && port != 80) || (this.res.req.protocol === 'https' && port != 443)) {
+        let uri = `${noproto ? '' : this.res.req.protocol + ':'}//${this.res.req.hostname}`;
+        if (port && ((this.res.req.protocol === 'http' && port != 80) || (this.res.req.protocol === 'https' && port != 443))) {
             uri += `:${port}`;
         }
         if (path) {

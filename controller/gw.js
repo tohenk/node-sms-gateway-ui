@@ -43,7 +43,7 @@ class GwController extends Controller
             }
             res.render('gw/index', {
                 socket: {
-                    url: req.getUri('/ui'),
+                    url: req.getUri({path: '/ui', noproto: true}),
                     options: socketOptions
                 }
             });
