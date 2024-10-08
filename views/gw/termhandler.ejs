@@ -32,15 +32,15 @@ $.term = {
         self.current = name;
         if (!self.msgdlg) {
             const message =
-                '<form class="ui container form">' +
-                    '<div class="field">' +
-                        '<label>${_('Phone number:')}</label>' +
-                        '<input type="text" name="address" value="">' +
-                    '</div>' +
-                    '<div class="field">' +
-                        '<label>${_('Message:')}</label>' +
-                        '<textarea name="message" rows="2"></textarea>' +
-                    '</div>' +
+                '<form class="ui container form">\\n' +
+                '  <div class="field">\\n' +
+                '    <label>${_('Phone number:')}</label>\\n' +
+                '    <input type="text" name="address" value="">\\n' +
+                '  </div>\\n' +
+                '  <div class="field">\\n' +
+                '    <label>${_('Message:')}</label>\\n' +
+                '    <textarea name="message" rows="2"></textarea>\\n' +
+                '  </div>\\n' +
                 '</form>';
             self.msgdlg = $.ntdlg.dialog('msgdlg', '${_('Send message')}', message, 'envelope icon', {
                 okay: {
@@ -85,15 +85,15 @@ $.term = {
         self.current = name;
         if (!self.ussddlg) {
             const message =
-                '<form class="ui container form">' +
-                    '<div class="field">' +
-                        '<label>${_('Service:')}</label>' +
-                        '<input type="text" name="service" value="">' +
-                    '</div>' +
-                    '<div class="field">' +
-                        '<label>${_('Feedback:')}</label>' +
-                        '<textarea name="feedback" rows="5"></textarea>' +
-                    '</div>' +
+                '<form class="ui container form">\\n' +
+                '  <div class="field">\\n' +
+                '    <label>${_('Service:')}</label>\\n' +
+                '    <input type="text" name="service" value="">\\n' +
+                '  </div>\\n' +
+                '  <div class="field">\\n' +
+                '    <label>${_('Feedback:')}</label>\\n' +
+                '    <textarea name="feedback" rows="5"></textarea>\\n' +
+                '  </div>\\n' +
                 '</form>';
             self.ussddlg = $.ntdlg.dialog('ussddlg', '${_('Send USSD')}', message, 'envelope icon', {
                 okay: {

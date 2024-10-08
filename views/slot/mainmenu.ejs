@@ -43,24 +43,19 @@
   .useDependencies(['JQuery/Util', 'SemanticUI/Notification', 'SemanticUI/Dialog/Message'])
   .addMiddle(`
 $.tasks = {
-    notifyResult: function(result) {
-        if (result.success) {
-            $.notify('${_('Operation successfully submitted!')}', 'success');
-        } else {
-            $.notify('${_('Operation failed!')}', 'error');
-        }
-    },
     about: function() {
         const self = this;
         const f = function() {
-            const msg = $.util.template('<p>%TITLE% version %VERSION%<br/>' +
-                '(c) %AUTHOR%<br/>' +
+            const msg = $.util.template(
+                '<p>%TITLE% version %VERSION%<br/>\\n' +
+                '(c) %AUTHOR%<br/>\\n' +
                 'Licensed under %LICENSE%</p>', {
-                TITLE: self.aboutInfo.title,
-                VERSION: self.aboutInfo.version,
-                AUTHOR: $('<div>').text(self.aboutInfo.author).html(),
-                LICENSE: self.aboutInfo.license
-            });
+                    TITLE: self.aboutInfo.title,
+                    VERSION: self.aboutInfo.version,
+                    AUTHOR: $('<div>').text(self.aboutInfo.author).html(),
+                    LICENSE: self.aboutInfo.license
+                }
+            );
             $.ntdlg.message('task-about', '${_('About')}', msg, $.ntdlg.ICON_INFO);
         }
         if (!self.aboutInfo) {
@@ -73,21 +68,28 @@ $.tasks = {
             f();
         }
     },
+    notifyResult: function(result) {
+        if (result.success) {
+            $.notify('${_('Operation successfully submitted!')}', 'success');
+        } else {
+            $.notify('${_('Operation failed!')}', 'error');
+        }
+    },
     createPickMessageTypeDialog: function(id, title, label, handler, icon) {
         const message =
-            '<form class="ui container form">' +
-                '<div class="field">' +
-                    '<label>' + label + '</label>' +
-                    '<select name="type" class="ui dropdown">' +
-                        '<option value="0">${_('Unread messages')}</option>' +
-                        '<option value="1">${_('Read messages')}</option>' +
-                    '</select>' +
-                '</div>' +
+            '<form class="ui container form">\\n' +
+            '  <div class="field">\\n' +
+            '    <label>' + label + '</label>\\n' +
+            '    <select name="type" class="ui dropdown">\\n' +
+            '      <option value="0">${_('Unread messages')}</option>\\n' +
+            '      <option value="1">${_('Read messages')}</option>\\n' +
+            '    </select>\\n' +
+            '  </div>\\n' +
             '</form>';
         const dlg = $.ntdlg.dialog(id, title, message, icon ? icon : 'envelope icon', {
-            'okay': {
+            okay: {
                 type: 'green approve',
-                caption: '<i class="check icon"></i>Ok',
+                caption: '<i class="check icon"></i>${_('Ok')}',
                 handler: function() {
                     const t = parseInt(dlg.find('select[name="type"]').val());
                     if (typeof handler === 'function') {
@@ -95,7 +97,7 @@ $.tasks = {
                     }
                 }
             },
-            'cancel': {
+            cancel: {
                 type: 'red deny',
                 caption: '<i class="times icon"></i>${_('Cancel')}'
             }
@@ -109,21 +111,21 @@ $.tasks = {
     },
     createPickTimeDialog: function(id, title, label, handler, icon) {
         const message =
-            '<form class="ui container form">' +
-                '<div class="field">' +
-                    '<label>' + label + '</label>' +
-                    '<div class="ui calendar">' +
-                        '<div class="ui input left icon">' +
-                        '<i class="calendar icon"></i>' +
-                        '<input name="since" type="text" placeholder="${_('Date/Time')}">' +
-                        '</div>' +
-                    '</div>' +
-                '</div>' +
+            '<form class="ui container form">\\n' +
+            '  <div class="field">\\n' +
+            '    <label>' + label + '</label>\\n' +
+            '    <div class="ui calendar">\\n' +
+            '      <div class="ui input left icon">\\n' +
+            '        <i class="calendar icon"></i>\\n' +
+            '        <input name="since" type="text" placeholder="${_('Date/Time')}">\\n' +
+            '      </div>\\n' +
+            '    </div>\\n' +
+            '  </div>\\n' +
             '</form>';
         const dlg = $.ntdlg.dialog(id, title, message, icon ? icon : 'envelope icon', {
             okay: {
                 type: 'green approve',
-                caption: '<i class="check icon"></i>Ok',
+                caption: '<i class="check icon"></i>${_('Ok')}',
                 handler: function() {
                     const t = dlg.find('input[name="since"]');
                     try {
@@ -152,36 +154,42 @@ $.tasks = {
     readMessages: function() {
         const self = this;
         if (!self.readmsgdlg) {
-            self.readmsgdlg = self.createPickMessageTypeDialog('readmsgdlg', '${_('Read Messages')}', '${_('Select message type to read:')}', function(msg) {
-                $.post('${route('Gw', {name: 'task', op: 'readmsg'})}', {type: msg})
-                    .done(function(json) {
-                        self.notifyResult(json);
-                    });
-            });
+            self.readmsgdlg = self.createPickMessageTypeDialog('read-msg-dlg', '${_('Read Messages')}',
+                '${_('Select message type to read:')}', function(msg) {
+                    $.post('${route('Gw', {name: 'task', op: 'readmsg'})}', {type: msg})
+                        .done(function(json) {
+                            self.notifyResult(json);
+                        });
+                }
+            );
         }
         $.ntdlg.show(self.readmsgdlg);
     },
     resendMessages: function() {
         const self = this;
         if (!self.resendmsgdlg) {
-            self.resendmsgdlg = self.createPickTimeDialog('resendmsgdlg', '${_('Resend Incoming Messages')}', '${_('Resend incoming messages since:')}', function(since) {
-                $.post('${route('Gw', {name: 'task', op: 'resendmsg'})}', {since: since.valueOf()})
-                    .done(function(json) {
-                        self.notifyResult(json);
-                    });
-            });
+            self.resendmsgdlg = self.createPickTimeDialog('resend-msg-dlg', '${_('Resend Incoming Messages')}',
+                '${_('Resend incoming messages since:')}', function(since) {
+                    $.post('${route('Gw', {name: 'task', op: 'resendmsg'})}', {since: since.valueOf()})
+                        .done(function(json) {
+                            self.notifyResult(json);
+                        });
+                }
+            );
         }
         $.ntdlg.show(self.resendmsgdlg);
     },
     checkReport: function() {
         const self = this;
         if (!self.checkrptdlg) {
-            self.checkrptdlg = self.createPickTimeDialog('checkrptdlg', '${_('Check report')}', '${_('Check for message report since:')}', function(since) {
-                $.post('${route('Gw', {name: 'task', op: 'report'})}', {since: since.valueOf()})
-                    .done(function(json) {
-                        self.notifyResult(json);
-                    });
-            });
+            self.checkrptdlg = self.createPickTimeDialog('check-rpt-dlg', '${_('Check report')}',
+                '${_('Check for message report since:')}', function(since) {
+                    $.post('${route('Gw', {name: 'task', op: 'report'})}', {since: since.valueOf()})
+                        .done(function(json) {
+                            self.notifyResult(json);
+                        });
+                }
+            );
         }
         $.ntdlg.show(self.checkrptdlg);
     },
