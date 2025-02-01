@@ -10,7 +10,7 @@ $.errhandler.register(401, function() {
         okay: {
             type: 'green approve',
             caption: '<i class="check icon"></i>${_('Ok')}',
-            handler: function() {
+            handler() {
                 window.location.reload();
             }
         }

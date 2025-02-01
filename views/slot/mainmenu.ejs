@@ -43,7 +43,7 @@
   .useDependencies(['JQuery/Util', 'SemanticUI/Notification', 'SemanticUI/Dialog/Message'])
   .addMiddle(`
 $.tasks = {
-    about: function() {
+    about() {
         const self = this;
         const f = function() {
             const msg = $.util.template(
@@ -68,14 +68,14 @@ $.tasks = {
             f();
         }
     },
-    notifyResult: function(result) {
+    notifyResult(result) {
         if (result.success) {
             $.notify('${_('Operation successfully submitted!')}', 'success');
         } else {
             $.notify('${_('Operation failed!')}', 'error');
         }
     },
-    createPickMessageTypeDialog: function(id, title, label, handler, icon) {
+    createPickMessageTypeDialog(id, title, label, handler, icon) {
         const message =
             '<form class="ui container form">\\n' +
             '  <div class="field">\\n' +
@@ -90,7 +90,7 @@ $.tasks = {
             okay: {
                 type: 'green approve',
                 caption: '<i class="check icon"></i>${_('Ok')}',
-                handler: function() {
+                handler() {
                     const t = parseInt(dlg.find('select[name="type"]').val());
                     if (typeof handler === 'function') {
                         handler(t);
@@ -109,7 +109,7 @@ $.tasks = {
         });
         return dlg;
     },
-    createPickTimeDialog: function(id, title, label, handler, icon) {
+    createPickTimeDialog(id, title, label, handler, icon) {
         const message =
             '<form class="ui container form">\\n' +
             '  <div class="field">\\n' +
@@ -126,7 +126,7 @@ $.tasks = {
             okay: {
                 type: 'green approve',
                 caption: '<i class="check icon"></i>${_('Ok')}',
-                handler: function() {
+                handler() {
                     const t = dlg.find('input[name="since"]');
                     try {
                         dt = new Date(t.val());
@@ -151,7 +151,7 @@ $.tasks = {
         });
         return dlg;
     },
-    readMessages: function() {
+    readMessages() {
         const self = this;
         if (!self.readmsgdlg) {
             self.readmsgdlg = self.createPickMessageTypeDialog('read-msg-dlg', '${_('Read Messages')}',
@@ -165,7 +165,7 @@ $.tasks = {
         }
         $.ntdlg.show(self.readmsgdlg);
     },
-    resendMessages: function() {
+    resendMessages() {
         const self = this;
         if (!self.resendmsgdlg) {
             self.resendmsgdlg = self.createPickTimeDialog('resend-msg-dlg', '${_('Resend Incoming Messages')}',
@@ -179,7 +179,7 @@ $.tasks = {
         }
         $.ntdlg.show(self.resendmsgdlg);
     },
-    checkReport: function() {
+    checkReport() {
         const self = this;
         if (!self.checkrptdlg) {
             self.checkrptdlg = self.createPickTimeDialog('check-rpt-dlg', '${_('Check report')}',
@@ -193,7 +193,7 @@ $.tasks = {
         }
         $.ntdlg.show(self.checkrptdlg);
     },
-    init: function() {
+    init() {
         const self = this;
         $('.menu-about').on('click', function(e) {
             e.preventDefault();

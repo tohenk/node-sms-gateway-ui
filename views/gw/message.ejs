@@ -16,7 +16,7 @@
 $.messageView = function(address) {
     if (!$.messageViewDlg) {
         $.messageViewDlg = {
-            init: function() {
+            init() {
                 const self = this;
                 const msgtitle = '${_('View message')}';
                 const msgtmpl =
@@ -42,7 +42,7 @@ $.messageView = function(address) {
                     self.send();
                 });
             },
-            notifyResult: function(result) {
+            notifyResult(result) {
                 const self = this;
                 if (result.success) {
                     this.load();
@@ -51,7 +51,7 @@ $.messageView = function(address) {
                     $.notify(result.error, 'error');
                 }
             },
-            send: function() {
+            send() {
                 const self = this;
                 const inp = self.dlg.find('input[name="message"]');
                 const msg = inp.val();
@@ -66,7 +66,7 @@ $.messageView = function(address) {
                     ;
                 }
             },
-            show: function(address) {
+            show(address) {
                 const self = this;
                 self.address = address;
                 self.dlg.find('input[name="message"]').val('');
@@ -75,11 +75,11 @@ $.messageView = function(address) {
                 $.ntdlg.show(self.dlg);
                 self.load();
             },
-            content: function(content) {
+            content(content) {
                 const self = this;
                 self.dlg.find('form .content').html(content);
             },
-            statusInfo: function(data) {
+            statusInfo(data) {
                 if (data.code !== null) {
                     return data.code === 0 ? ['green check', '${_('Message received')}'] : ['red exclamation', '${_('Message not received')}'];
                 } else {
@@ -90,7 +90,7 @@ $.messageView = function(address) {
                     }
                 }
             },
-            load: function() {
+            load() {
                 const self = this;
                 $.get('${route('Gw', {name: 'message-get', number: 'NUMBER'})}'.replace(/NUMBER/, self.address))
                     .done(function(json) {
@@ -143,7 +143,7 @@ $.messageView = function(address) {
 }
 $.message = $.loader($('div[data-tab="message"] table'), {
     url: '${route('Gw', {name: 'message-page', page: 'PAGE'})}',
-    formatRow: function(item) {
+    formatRow(item) {
         return $('<tr><td>' + item.nr + '</td>' +
             '<td>' + item.address + '</td>' +
             '<td>' + item.data + '</td>' +
@@ -151,7 +151,7 @@ $.message = $.loader($('div[data-tab="message"] table'), {
             '<td class="ui center aligned"><a href="#" data-address="' + item.address + '">' + this.icon(4) + '</a></td>' +
             '</tr>');
     },
-    loaded: function() {
+    loaded() {
         this.container.find('tbody a').on('click', function(e) {
             e.preventDefault();
             $.messageView($(this).data('address'));

@@ -14,7 +14,7 @@
   .addMiddle(`
 $.client = $.loader($('div[data-tab="client"] table'), {
     url: '${route('Gw', {name: 'client'})}',
-    formatRow: function(item) {
+    formatRow(item) {
         return $('<tr><td>' + item.nr + '</td>' +
             '<td>' + item.id + '</td>' +
             '<td>' + item.address + '</td>' +
@@ -22,7 +22,7 @@ $.client = $.loader($('div[data-tab="client"] table'), {
             '<td>' + (item.group ? item.group : '&ndash;') + '</td>' +
             '</tr>');
     },
-    loaded: function(json) {
+    loaded(json) {
         $('a[data-tab="client"] span.label').text(json.items.length);
     }
 });

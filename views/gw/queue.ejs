@@ -18,7 +18,7 @@
   .addMiddle(`
 $.gwqueue = $.loader($('div[data-tab="queue"] table'), {
     url: '${route('Gw', {name: 'queue-page', page: 'PAGE'})}',
-    formatRow: function(item) {
+    formatRow(item) {
         return $('<tr><td>' + item.nr + '</td>' +
             '<td>' + item.time + '</td>' +
             '<td>' + item.hash.substr(0, 8) + '</td>' +
@@ -30,7 +30,7 @@ $.gwqueue = $.loader($('div[data-tab="queue"] table'), {
             '<td>' + this.formatStatus(item.status, item.processed, item.type) + '</td>' +
             '</tr>');
     },
-    loaded: function() {
+    loaded() {
         const self = this;
         if (self.loading) {
             self.loading = false;

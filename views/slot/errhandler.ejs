@@ -3,14 +3,14 @@
   .addMiddle(`
 $.define('errhandler', {
     handlers: {},
-    register: function(code, handler) {
+    register(code, handler) {
         const self = this;
         if (!self.handlers[code]) {
             self.handlers[code] = [];
         }
         self.handlers[code].push(handler); 
     },
-    handle: function(code) {
+    handle(code) {
         const self = this;
         if (self.handlers[code]) {
             for (let i = 0; i < self.handlers[code].length; i++) {

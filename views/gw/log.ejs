@@ -6,7 +6,7 @@
 $.log = {
     el: $('textarea.activity'),
     url: '${route('Gw', {name: 'activity'})}',
-    load: function() {
+    load() {
         const self = this;
         $.get(self.url)
             .done(function(json) {
@@ -16,7 +16,7 @@ $.log = {
                 }
             });
     },
-    add: function(data) {
+    add(data) {
         const self = this;
         if (data.time >= self.time) {
             const message = data.message + '\\r\\n';

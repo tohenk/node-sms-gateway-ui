@@ -2,7 +2,7 @@
   .useDependencies(['JQuery/FormPost', 'SemanticUI/Notification', 'SemanticUI/Dialog', 'SemanticUI/Dialog/Message'])
   .addMiddle(`
 $.term = {
-    notifyResult: function(result) {
+    notifyResult(result) {
         if (result.success) {
             if ($.gwqueue !== undefined) {
                 $.gwqueue.load($.gwqueue.page);
@@ -12,7 +12,7 @@ $.term = {
             $.notify(result.error, 'error');
         }
     },
-    showDialer: function(name) {
+    showDialer(name) {
         const self = this;
         self.current = name;
         $.ntdlg.input('dialnumber', '${_('Place a call')}', '${_('Please input the number to dial:')}', '', 'phone icon', function(number) {
@@ -27,7 +27,7 @@ $.term = {
             }
         });
     },
-    sendMessage: function(name) {
+    sendMessage(name) {
         const self = this;
         self.current = name;
         if (!self.msgdlg) {
@@ -46,7 +46,7 @@ $.term = {
                 okay: {
                     type: 'green approve',
                     caption: '<i class="check icon"></i>${_('Ok')}',
-                    handler: function() {
+                    handler() {
                         const msgaddr = self.msgaddress.val();
                         const msgtext = self.msgtext.val();
                         if ('' === msgaddr) {
@@ -80,7 +80,7 @@ $.term = {
         self.msgtext.val('');
         $.ntdlg.show(self.msgdlg);
     },
-    sendUssd: function(name) {
+    sendUssd(name) {
         const self = this;
         self.current = name;
         if (!self.ussddlg) {
@@ -99,7 +99,7 @@ $.term = {
                 okay: {
                     type: 'green',
                     caption: '<i class="check icon"></i>${_('Ok')}',
-                    handler: function() {
+                    handler() {
                         const service = self.ussdservice.val();
                         if ('' === service) {
                             self.ussdservice.focus();
@@ -129,7 +129,7 @@ $.term = {
         self.ussdfeedback.val('');
         $.ntdlg.show(self.ussddlg);
     },
-    receiveUssd: function(data) {
+    receiveUssd(data) {
         const self = this;
         if (self.current == data.imsi && self.ussdfeedback) {
             let message = self.ussdfeedback.val();
@@ -140,7 +140,7 @@ $.term = {
             self.ussdfeedback.val(message);
         }
     },
-    clicker: function(cmd, src) {
+    clicker(cmd, src) {
         const self = this;
         const cont = src.parents('form');
         if (cont.length) {
@@ -158,7 +158,7 @@ $.term = {
             }
         }
     },
-    loadConfig: function() {
+    loadConfig() {
         const self = this;
         $.get('${route('Gw', {name: 'term-config', imsi: 'IMSI'})}'.replace(/IMSI/, self.form.data('term')))
             .done(function(json) {
@@ -191,7 +191,7 @@ $.term = {
             })
         ;
     },
-    handle: function(terminal, operator) {
+    handle(terminal, operator) {
         const self = this;
         self.form.attr('action', '${route('Gw', {name: 'term-apply', imsi: 'IMSI'})}'.replace(/IMSI/, terminal));
         self.form.data('term', terminal);
@@ -199,7 +199,7 @@ $.term = {
         self.form.find('.message .header').html(terminal + ' <span class="ui tiny blue label">' + operator + '</span>');
         self.loadConfig();
     },
-    init: function() {
+    init() {
         const self = this;
         self.form = $('form.term-config');
         $.formpost(self.form, {xhr: true, progress: false});

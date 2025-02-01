@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2018-2024 Toha <tohenk@yahoo.com>
+ * Copyright (c) 2018-2025 Toha <tohenk@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -31,6 +31,9 @@ const FileStore = require('session-file-store')(session);
 const { Helper, Security, Factory } = require('@ntlab/express-middleware');
 const { ScriptManager, ScriptAsset } = require('@ntlab/ntjs');
 const { Assets, CDN } = require('@ntlab/ntjs-assets');
+
+// register script repository
+require('@ntlab/ntjs-repo')();
 
 class ExpressApp {
 

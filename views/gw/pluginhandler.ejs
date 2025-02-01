@@ -1,7 +1,7 @@
 <%_ script.create('JQuery')
   .addMiddle(`
 $.plugin = {
-    handle: function(clicker) {
+    handle(clicker) {
         const self = this;
         const icon = clicker.find('.icon').attr('class');
         self.container.find('.message .header').html(clicker.text());
@@ -13,7 +13,7 @@ $.plugin = {
             })
         ;
     },
-    init: function() {
+    init() {
         const self = this;
         self.container = $('.plugin-container');
     }

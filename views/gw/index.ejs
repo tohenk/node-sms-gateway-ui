@@ -44,7 +44,7 @@
 $.uiCon = {
     connected: false,
     data: ${s(socket, 1)},
-    init: function() {
+    init() {
         const self = this;
         self.socket = io.connect(self.data.url, self.data.options);
         self.socket
