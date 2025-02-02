@@ -1,5 +1,5 @@
 <div class="ui top attached stackable tabular menu">
-  <a class="active item" data-tab="status"><%= _('Status') %></a>
+  <a class="item" data-tab="status"><%= _('Status') %></a>
   <a class="item" data-tab="queue"><%= _('Queue') %></a>
   <a class="item" data-tab="message"><%= _('Message') %></a>
   <a class="item" data-tab="log"><%= _('Logs') %></a>
@@ -11,7 +11,7 @@
   <a class="item" data-tab="plugin"><%= _('Plugins') %> <span class="ui tiny label"><%= term.plugins.length %></span></a>
   <%_ } -%>
 </div>
-<div class="ui bottom attached active tab segment" data-tab="status">
+<div class="ui bottom attached tab segment" data-tab="status">
 <%- include('status') -%>
 </div>
 <div class="ui bottom attached tab segment" data-tab="queue">
@@ -90,7 +90,12 @@ $.uiCon = {
 }
 `)
   .addLast(`
-$('.menu .item').tab();
+$('.menu .item').tab({
+    autoTabActivation: window.location.hash ? window.location.hash.substr(1) : true,
+    onLoad(path, params, history) {
+        window.location.hash = path;
+    }
+});
 $('.ui.checkbox').checkbox();
 $('select.dropdown').dropdown();
 $.uiCon.init();
