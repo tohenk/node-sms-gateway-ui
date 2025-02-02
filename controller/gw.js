@@ -149,6 +149,10 @@ class GwController extends Controller
                     if (!parameters.term.operators) {
                         parameters.term.operators = [];
                     }
+                    if (!parameters.term.groups) {
+                        parameters.term.groups = [];
+                    }
+                    parameters.term.group = parameters.term.groups.join(',');
                     terminal.readOptions(parameters.term);
                     result.success = true;
                     result.notice = this._('Your changes has been successfuly applied.');

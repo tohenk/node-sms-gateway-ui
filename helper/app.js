@@ -47,6 +47,7 @@ class AppFunctions extends HelperFunctions {
             s: (o, l = 0) => Stringify.from(o, l),
             route: (name, parameters) => this.genRoute(name, parameters),
             path: path => this.genPath(path),
+            allgroups: () => this.getGroups(),
         }
     }
 
@@ -123,6 +124,20 @@ class AppFunctions extends HelperFunctions {
             }
         }
         return path;
+    }
+
+    getGroups() {
+        const groups = [];
+        if (this.app.term && this.app.term.terminals) {
+            this.app.term.terminals.forEach(term => {
+                term.options.groups.forEach(group => {
+                    if (!groups.includes(group)) {
+                        groups.push(group);
+                    }
+                });
+            });
+        }
+        return groups;
     }
 }
 

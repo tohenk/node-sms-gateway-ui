@@ -140,6 +140,26 @@ $.term = {
             self.ussdfeedback.val(message);
         }
     },
+    addGroup() {
+        const self = this;
+        $.ntdlg.input('addgroup', '${_('Add group')}', '${_('Please input group name:')}', '', 'object group icon', function(group) {
+            if (group.length) {
+                const select = $('select[name="term[groups][]"]');
+                let exist = false;
+                select.find('option').each(function() {
+                    if ($(this).prop('value') === group) {
+                        exist = true;
+                        return false;
+                    }
+                });
+                if (!exist) {
+                    $(\`<option value="\${group}">\${group}</option>\`).appendTo(select);
+                }
+            } else {
+                return false;
+            }
+        });
+    },
     clicker(cmd, src) {
         const self = this;
         const cont = src.parents('form');
@@ -162,9 +182,11 @@ $.term = {
         const self = this;
         $.get('${route('Gw', {name: 'term-config', imsi: 'IMSI'})}'.replace(/IMSI/, self.form.data('term')))
             .done(function(json) {
-                $.each(json, function(key, value) {
+                for (const key of Object.keys(json)) {
+                    const value = json[key];
                     let item;
                     switch (key) {
+                        case 'groups':
                         case 'operators':
                             item = self.form.find('select[name="term[' + key + '][]"]');
                             break;
@@ -187,7 +209,7 @@ $.term = {
                             item.val(value);
                         }
                     }
-                });
+                }
             })
         ;
     },
@@ -217,6 +239,10 @@ $.term = {
         self.form.find('.btn-ussd').on('click', function(e) {
             e.preventDefault();
             self.clicker('ussd', $(this));
+        });
+        self.form.find('.add-group').on('click', function(e) {
+            e.preventDefault();
+            self.addGroup();
         });
     }
 }

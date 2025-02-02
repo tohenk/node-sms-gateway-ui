@@ -101,8 +101,16 @@
         <div class="two fields">
           <div class="field">
             <label><%= _('Group') %></label>
-            <input type="text" name="term[group]" value="" placeholder="<%= _('Group') %>">
-            <small><%= _('Multiple groups can be combined using comma') %></small>
+            <div class="ui action input">
+              <select name="term[groups][]" class="ui fluid dropdown" multiple>
+                <%_ allgroups().forEach(group => { -%>
+                  <option value="<%= group %>"><%= group %></option>
+                <%_ }) -%>
+              </select>
+              <button class="ui icon button add-group">
+                <i class="plus icon"></i>
+              </button>
+            </div>
           </div>
           <div class="field">
             <label><%= _('Priority') %></label>
@@ -113,7 +121,7 @@
         <div class="field">
           <label><%= _('Select operators') %></label>
           <select name="term[operators][]" class="ui dropdown" multiple>
-          <%_ Object.keys(term.operators).forEach((operator) => { -%>
+          <%_ Object.keys(term.operators).forEach(operator => { -%>
             <option value="<%= operator %>"><%= operator %></option>
           <%_ }) -%>
           </select>
