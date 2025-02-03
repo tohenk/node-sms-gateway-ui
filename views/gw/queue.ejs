@@ -25,7 +25,7 @@ $.gwqueue = $.loader($('div[data-tab="queue"] table'), {
             '<td class="ui center aligned">' + this.icon(item.type) + '</td>' +
             '<td>' + (item.address ? item.address : '') +
                 (item.origin ? '<div><div class="ui mini grey label"><i class="phone icon"></i>' + item.origin + '</div></div>' : '') + '</td>' +
-            '<td>' + (item.data ? item.data : '') + '</td>' +
+            '<td>' + $.hidePayload(item.data) + '</td>' +
             '<td><i class="' + (item.processed ? 'green check' : 'clock') + ' icon"></i></td>' +
             '<td>' + this.formatStatus(item.status, item.processed, item.type) + '</td>' +
             '</tr>');

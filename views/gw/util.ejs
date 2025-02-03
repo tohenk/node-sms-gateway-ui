@@ -1,0 +1,10 @@
+<%_ script.create('JQuery')
+  .addMiddle(`
+$.hidePayload = function(message) {
+    return message ?
+        message.replace(
+            /[A-Za-z0-9\\+\\/\\=\\@\\,]{40,}/g,
+            s => \`<i class="comment dots outline icon" title="\${s}"></i>\`
+        ) : '';
+}
+`) -%>
