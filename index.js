@@ -47,6 +47,7 @@ class ExpressApp {
         // view engine setup
         this.app.set('views', path.join(__dirname, 'views'));
         this.app.set('view engine', 'ejs');
+        this.app.set('query parser', 'extended');
 
         // environment
         this.app.set('env', process.env.NODE_ENV || 'development');
