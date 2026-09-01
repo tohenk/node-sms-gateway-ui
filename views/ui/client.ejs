@@ -11,9 +11,9 @@
 </table>
 <%_ script.create('JQuery')
   .useDependencies('SemanticUI/Loader')
-  .addMiddle(`
+  .add(`
 $.client = $.loader($('div[data-tab="client"] table'), {
-    url: '${route('Gw', {name: 'client'})}',
+    url: '${route('Ui', {name: 'client'})}',
     formatRow(item) {
         return $('<tr><td>' + item.nr + '</td>' +
             '<td>' + item.id + '</td>' +
@@ -27,6 +27,6 @@ $.client = $.loader($('div[data-tab="client"] table'), {
     }
 });
 `)
-  .addLast(`
+  .addInitializer(`
 $.client.load();
 `) -%>

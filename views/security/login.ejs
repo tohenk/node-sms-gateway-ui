@@ -29,7 +29,7 @@
 </div>
 <%_ script.create('JQuery')
   .useDependencies(['JQuery/Util', 'JQuery/FormPost'])
-  .addMiddle(`
+  .add(`
 $.login = function(form) {
     const fp = $.formpost(form, {progress: false, xhr: true});
     const err = fp.errhelper;
@@ -57,6 +57,6 @@ $.login = function(form) {
     form.find('input[name=username]').focus();
 }
 `)
-  .addLast(`
+  .addInitializer(`
 $.login($('form.login'));
 `) -%>

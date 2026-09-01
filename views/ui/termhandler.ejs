@@ -1,6 +1,6 @@
 <%_ script.create('JQuery')
   .useDependencies(['JQuery/FormPost', 'SemanticUI/Notification', 'SemanticUI/Dialog', 'SemanticUI/Dialog/Message'])
-  .addMiddle(`
+  .add(`
 $.term = {
     notifyResult(result) {
         if (result.success) {
@@ -17,7 +17,7 @@ $.term = {
         self.current = name;
         $.ntdlg.input('dialnumber', '${_('Place a call')}', '${_('Please input the number to dial:')}', '', 'phone icon', function(number) {
             if (number.length) {
-                $.post('${route('Gw', {name: 'term-dial', imsi: 'IMSI'})}'.replace(/IMSI/, name), {number: number})
+                $.post('${route('Ui', {name: 'term-dial', imsi: 'IMSI'})}'.replace(/IMSI/, name), {number: number})
                     .done(function(json) {
                         self.notifyResult(json);
                     })
@@ -57,7 +57,7 @@ $.term = {
                             self.msgtext.focus();
                             return false;
                         }
-                        $.post('${route('Gw', {name: 'term-send', imsi: 'IMSI'})}'.replace(/IMSI/, self.current), {number: msgaddr, message: msgtext})
+                        $.post('${route('Ui', {name: 'term-send', imsi: 'IMSI'})}'.replace(/IMSI/, self.current), {number: msgaddr, message: msgtext})
                             .done(function(json) {
                                 self.notifyResult(json);
                             })
@@ -104,7 +104,7 @@ $.term = {
                         if ('' === service) {
                             self.ussdservice.focus();
                         } else {
-                            $.post('${route('Gw', {name: 'term-ussd', imsi: 'IMSI'})}'.replace(/IMSI/, self.current), {service: service})
+                            $.post('${route('Ui', {name: 'term-ussd', imsi: 'IMSI'})}'.replace(/IMSI/, self.current), {service: service})
                                 .done(function(json) {
                                     self.notifyResult(json);
                                 })
@@ -180,7 +180,7 @@ $.term = {
     },
     loadConfig() {
         const self = this;
-        $.get('${route('Gw', {name: 'term-config', imsi: 'IMSI'})}'.replace(/IMSI/, self.form.data('term')))
+        $.get('${route('Ui', {name: 'term-config', imsi: 'IMSI'})}'.replace(/IMSI/, self.form.data('term')))
             .done(function(json) {
                 for (const key of Object.keys(json)) {
                     const value = json[key];
@@ -215,7 +215,7 @@ $.term = {
     },
     handle(terminal, operator) {
         const self = this;
-        self.form.attr('action', '${route('Gw', {name: 'term-apply', imsi: 'IMSI'})}'.replace(/IMSI/, terminal));
+        self.form.attr('action', '${route('Ui', {name: 'term-apply', imsi: 'IMSI'})}'.replace(/IMSI/, terminal));
         self.form.data('term', terminal);
         self.form.data('operator', operator);
         self.form.find('.message .header').html(terminal + ' <span class="ui tiny blue label">' + operator + '</span>');

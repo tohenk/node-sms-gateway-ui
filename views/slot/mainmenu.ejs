@@ -41,7 +41,7 @@
 <%- menu(menus, {mainmenu: true, indentation: 2}) %>
 <%_ script.create('JQuery')
   .useDependencies(['JQuery/Util', 'SemanticUI/Notification', 'SemanticUI/Dialog/Message'])
-  .addMiddle(`
+  .add(`
 $.tasks = {
     about() {
         const self = this;
@@ -59,7 +59,7 @@ $.tasks = {
             $.ntdlg.message('task-about', '${_('About')}', msg, $.ntdlg.ICON_INFO);
         }
         if (!self.aboutInfo) {
-            $.get('${route('Gw', {name: 'about'})}')
+            $.get('${route('Ui', {name: 'about'})}')
                 .done(function(json) {
                     self.aboutInfo = json;
                     f();
@@ -156,7 +156,7 @@ $.tasks = {
         if (!self.readmsgdlg) {
             self.readmsgdlg = self.createPickMessageTypeDialog('read-msg-dlg', '${_('Read Messages')}',
                 '${_('Select message type to read:')}', function(msg) {
-                    $.post('${route('Gw', {name: 'task', op: 'readmsg'})}', {type: msg})
+                    $.post('${route('Ui', {name: 'task', op: 'readmsg'})}', {type: msg})
                         .done(function(json) {
                             self.notifyResult(json);
                         });
@@ -170,7 +170,7 @@ $.tasks = {
         if (!self.resendmsgdlg) {
             self.resendmsgdlg = self.createPickTimeDialog('resend-msg-dlg', '${_('Resend Incoming Messages')}',
                 '${_('Resend incoming messages since:')}', function(since) {
-                    $.post('${route('Gw', {name: 'task', op: 'resendmsg'})}', {since: since.valueOf()})
+                    $.post('${route('Ui', {name: 'task', op: 'resendmsg'})}', {since: since.valueOf()})
                         .done(function(json) {
                             self.notifyResult(json);
                         });
@@ -184,7 +184,7 @@ $.tasks = {
         if (!self.checkrptdlg) {
             self.checkrptdlg = self.createPickTimeDialog('check-rpt-dlg', '${_('Check report')}',
                 '${_('Check for message report since:')}', function(since) {
-                    $.post('${route('Gw', {name: 'task', op: 'report'})}', {since: since.valueOf()})
+                    $.post('${route('Ui', {name: 'task', op: 'report'})}', {since: since.valueOf()})
                         .done(function(json) {
                             self.notifyResult(json);
                         });
@@ -213,6 +213,6 @@ $.tasks = {
         });
     }
 }
-`).addLast(`
+`).addInitializer(`
 $.tasks.init();
 `) -%>

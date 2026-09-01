@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2018-2025 Toha <tohenk@yahoo.com>
+ * Copyright (c) 2018-2026 Toha <tohenk@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -26,8 +26,8 @@ const path = require('path');
 const Controller = require('@ntlab/express-controller');
 const Express = require('express').application;
 
-class PluginController extends Controller
-{
+class PluginController extends Controller {
+
     buildRoutes() {
         this.addRoute('index', 'all', '/p/:plugin', (req, res, next) => {
             if (req.params.plugin) {
@@ -59,7 +59,7 @@ class PluginController extends Controller
      * @returns {PluginController}
      */
     static create(app, prefix = '/') {
-        const controller = new PluginController({prefix: prefix, name: 'Plugin'});
+        const controller = new PluginController({prefix, name: 'Plugin'});
         app.use(prefix, controller.router);
         return controller;
     }

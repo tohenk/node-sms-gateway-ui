@@ -15,9 +15,9 @@
 </table>
 <%_ script.create('JQuery')
   .useDependencies('SemanticUI/Loader')
-  .addMiddle(`
+  .add(`
 $.gwqueue = $.loader($('div[data-tab="queue"] table'), {
-    url: '${route('Gw', {name: 'queue-page', page: 'PAGE'})}',
+    url: '${route('Ui', {name: 'queue-page', page: 'PAGE'})}',
     formatRow(item) {
         return $('<tr><td>' + item.nr + '</td>' +
             '<td>' + item.time + '</td>' +
@@ -55,7 +55,7 @@ $.gwqueue.formatStatus = function(status, processed, type) {
 $.gwqueue.updateStates = function(imsi) {
     const stat = $('div[data-stat="' + imsi + '"]');
     if (stat.length) {
-        $.get('${route('Gw', {name: 'term-stat', imsi: 'IMSI'})}'.replace(/IMSI/, imsi))
+        $.get('${route('Ui', {name: 'term-stat', imsi: 'IMSI'})}'.replace(/IMSI/, imsi))
             .done(function(json) {
                 const stats = Object.keys(json);
                 if (stats.length) {
@@ -75,6 +75,6 @@ $.gwqueue.reload = function() {
     }
 }
 `)
-  .addLast(`
+  .addInitializer(`
 $.gwqueue.load();
 `) -%>

@@ -1,6 +1,6 @@
 <%_ script.create('JQuery')
   .useDependencies(['JQuery/Util', 'SemanticUI/Dialog'])
-  .addMiddle(`
+  .add(`
 $.errhandler.register(401, function() {
     const dlgId = 'err401';
     if ($.ntdlg.isVisible(dlgId)) {

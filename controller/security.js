@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2018-2025 Toha <tohenk@yahoo.com>
+ * Copyright (c) 2018-2026 Toha <tohenk@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -25,8 +25,8 @@
 const Controller = require('@ntlab/express-controller');
 const Express = require('express').application;
 
-class SecurityController extends Controller
-{
+class SecurityController extends Controller {
+
     buildRoutes() {
         this.addRoute('index', 'get', '/login', (req, res, next) => {
             let redir;
@@ -67,7 +67,7 @@ class SecurityController extends Controller
      * @returns {SecurityController}
      */
     static create(app, prefix = '/') {
-        const controller = new SecurityController({prefix: prefix, name: 'Security'});
+        const controller = new SecurityController({prefix, name: 'Security'});
         app.use(prefix, controller.router);
         return controller;
     }

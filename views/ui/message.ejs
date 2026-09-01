@@ -12,7 +12,7 @@
 </table>
 <%_ script.create('JQuery')
   .useDependencies(['SemanticUI/Loader', 'SemanticUI/Dialog', 'SemanticUI/Notification', 'JQuery/Util'])
-  .addMiddle(`
+  .add(`
 $.messageView = function(address) {
     if (!$.messageViewDlg) {
         $.messageViewDlg = {
@@ -58,7 +58,7 @@ $.messageView = function(address) {
                 if (!msg.length) {
                     inp.focus();
                 } else {
-                    $.post('${route('Gw', {name: 'message-send'})}', {number: self.address, message: msg})
+                    $.post('${route('Ui', {name: 'message-send'})}', {number: self.address, message: msg})
                         .done(function(json) {
                             inp.val('');
                             self.notifyResult(json);
@@ -92,7 +92,7 @@ $.messageView = function(address) {
             },
             load() {
                 const self = this;
-                $.get('${route('Gw', {name: 'message-get', number: 'NUMBER'})}'.replace(/NUMBER/, self.address))
+                $.get('${route('Ui', {name: 'message-get', number: 'NUMBER'})}'.replace(/NUMBER/, self.address))
                     .done(function(json) {
                         const contents = [];
                         for (const time in json) {
@@ -142,7 +142,7 @@ $.messageView = function(address) {
     $.messageViewDlg.show(address);
 }
 $.message = $.loader($('div[data-tab="message"] table'), {
-    url: '${route('Gw', {name: 'message-page', page: 'PAGE'})}',
+    url: '${route('Ui', {name: 'message-page', page: 'PAGE'})}',
     formatRow(item) {
         return $('<tr><td>' + item.nr + '</td>' +
             '<td>' + item.address + '</td>' +
@@ -159,6 +159,6 @@ $.message = $.loader($('div[data-tab="message"] table'), {
     }
 });
 `)
-  .addLast(`
+  .addInitializer(`
 $.message.load();
 `) -%>

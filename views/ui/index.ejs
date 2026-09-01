@@ -41,7 +41,7 @@
 <%- include('util') -%>
 <%_ script.create('JQuery')
   .useDependencies(['SocketIO', 'SemanticUI/Dialog/Wait', 'SemanticUI/Dialog/Input'])
-  .addMiddle(`
+  .add(`
 $.uiCon = {
     connected: false,
     data: ${s(socket, 1)},
@@ -90,7 +90,7 @@ $.uiCon = {
     }
 }
 `)
-  .addLast(`
+  .addInitializer(`
 $('.menu .item').tab({
     autoTabActivation: window.location.hash ? window.location.hash.substr(1) : true,
     onLoad(path, params, history) {

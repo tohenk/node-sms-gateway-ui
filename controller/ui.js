@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2018-2025 Toha <tohenk@yahoo.com>
+ * Copyright (c) 2018-2026 Toha <tohenk@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -28,8 +28,8 @@ const moment = require('moment');
 const Controller = require('@ntlab/express-controller');
 const Express = require('express').application;
 
-class GwController extends Controller
-{
+class UiController extends Controller {
+
     buildRoutes() {
         this.addRoute('index', 'get', '/', async (req, res, next) => {
             const term = req.app.term;
@@ -41,7 +41,7 @@ class GwController extends Controller
             if (req.app.get('root') !== '/') {
                 socketOptions.path = req.getPath('/socket.io/');
             }
-            res.render('gw/index', {
+            res.render('ui/index', {
                 socket: {
                     url: req.getUri({path: '/ui', noproto: true}),
                     options: socketOptions
@@ -419,13 +419,13 @@ class GwController extends Controller
      *
      * @param {Express} app Express app
      * @param {string} prefix Path prefix 
-     * @returns {GwController}
+     * @returns {UiController}
      */
     static create(app, prefix = '/') {
-        const controller = new GwController({prefix: prefix, name: 'Gw'});
+        const controller = new UiController({prefix, name: 'Ui'});
         app.use(prefix, controller.router);
         return controller;
     }
 }
 
-module.exports = GwController.create;
+module.exports = UiController.create;
