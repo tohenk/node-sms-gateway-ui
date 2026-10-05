@@ -128,7 +128,7 @@ class ExpressApp {
         }
         ScriptManager.require('JQuery/FormPost')
             .setOption('redir-delay', 1000);
-        ScriptManager.translator = require('@ntlab/express-controller/translator')._;
+        ScriptManager.translator = require('@ntlab/ntlib/translator');
         ScriptManager.config = options;
     }
 }

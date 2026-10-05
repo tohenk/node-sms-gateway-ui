@@ -25,7 +25,6 @@
 const Helper = require('@ntlab/express-middleware/lib/helper');
 const HelperFunctions = require('@ntlab/express-middleware/lib/fn');
 const Controller = require('@ntlab/express-controller');
-const Translator = require('@ntlab/express-controller/translator');
 const Stringify = require('@ntlab/ntlib/stringify');
 const { ScriptManager } = require('@ntlab/ntjs');
 const { minify_sync } = require('terser');
@@ -43,7 +42,7 @@ class AppFunctions extends HelperFunctions {
 
     ViewFunctions() {
         return {
-            _: Translator._,
+            _: require('@ntlab/ntlib/translator'),
             s: (o, l = 0) => Stringify.from(o, l),
             route: (name, parameters) => this.genRoute(name, parameters),
             path: path => this.genPath(path),
