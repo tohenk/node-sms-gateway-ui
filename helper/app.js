@@ -31,6 +31,8 @@ const { minify_sync } = require('terser');
 
 /**
  * Express app middleware.
+ *
+ * @author Toha <tohenk@yahoo.com>
  */
 class AppFunctions extends HelperFunctions {
 
@@ -99,7 +101,7 @@ class AppFunctions extends HelperFunctions {
         if (!controller) {
             throw new Error(`Unable to find controller ${name}!`);
         }
-        const p = Object.assign({}, parameters);
+        const p = {...parameters};
         const route = p.name;
         if (!route) {
             throw new Error('Route name must be specified in parameters!');

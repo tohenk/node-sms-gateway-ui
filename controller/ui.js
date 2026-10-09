@@ -37,14 +37,15 @@ class UiController extends Controller {
                 const terminal = term.terminals[i];
                 terminal.stat = await terminal.getStat();
             }
-            const socketOptions = {reconnection: true};
+            const socketOptions = {};
             if (req.app.get('root') !== '/') {
                 socketOptions.path = req.getPath('/socket.io/');
             }
+            socketOptions.reconnection = true;
             res.render('ui/index', {
                 socket: {
-                    url: req.getUri({path: '/ui', noproto: true}),
-                    options: socketOptions
+                    url: `${req.getUri({noproto: true})}/ui`,
+                    options: socketOptions,
                 }
             });
         });
